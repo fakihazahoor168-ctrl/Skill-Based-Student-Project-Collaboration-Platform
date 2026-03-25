@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
   const navigate = useNavigate();
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/dashboard");
+    // Simulate registration success
+    setSuccess(true);
+
+    // Redirect to login after 2 seconds
+    setTimeout(() => {
+      navigate("/");
+    }, 2000);
   };
 
   return (
@@ -18,8 +25,6 @@ export default function Register() {
 
       {/* Register Card */}
       <div className="login-card position-relative">
-
-        {/* Logo + Title */}
         <h2 className="text-center mb-2 fw-bold brand-title d-flex justify-content-center align-items-center gap-2">
           TeamUp
         </h2>
@@ -28,71 +33,71 @@ export default function Register() {
           Create your account
         </p>
 
-        <form onSubmit={handleSubmit}>
+        {/* Success Message */}
+        {success && (
+          <div className="alert alert-success text-center mb-3">
+            Registration successful! Redirecting to login...
+          </div>
+        )}
 
-          {/* Name */}
+        <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label text-secondary">Full Name</label>
             <input
               type="text"
               className="form-control"
               placeholder="Enter your name"
+              required
             />
           </div>
 
-          {/* Email */}
           <div className="mb-3">
             <label className="form-label text-secondary">Email</label>
             <input
               type="email"
               className="form-control"
               placeholder="Enter your email"
+              required
             />
           </div>
 
-          {/* Password */}
           <div className="mb-3">
             <label className="form-label text-secondary">Password</label>
             <input
               type="password"
               className="form-control"
               placeholder="Create password"
+              required
             />
           </div>
 
-          {/* Skills (IMPORTANT for your project) */}
           <div className="mb-3">
             <label className="form-label text-secondary">Skills</label>
             <input
               type="text"
               className="form-control"
               placeholder="e.g. React, Node, UI Design"
+              required
             />
           </div>
 
-          {/* Button */}
           <button type="submit" className="btn login-btn w-100 py-2 mb-3">
             Register
           </button>
-
         </form>
 
-        {/* Divider */}
         <div className="text-center text-secondary mb-3">OR</div>
 
-        {/* Google */}
         <button className="btn btn-outline-light w-100 mb-3">
           Continue with Google
         </button>
 
-        {/* Login Link */}
         <p className="text-center text-secondary">
           Already have an account?{" "}
-       <Link to="/" className="link-text">
-  Login
-</Link>
+          <Link to="/" className="link-text">
+            Login
+          </Link>
         </p>
-
       </div>
     </div>
   );
