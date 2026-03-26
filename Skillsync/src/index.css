@@ -137,3 +137,225 @@ body {
 .text-secondary {
   color: #94A3B8 !important;
 }
+
+/* ===== NAVBAR ===== */
+.navbar-custom {
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* LOGO */
+.logo-icon {
+  font-size: 22px;
+  filter: drop-shadow(0 0 6px #06B6D4);
+}
+
+/* NAV LINKS */
+.nav-link {
+  color: #94A3B8;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: #06B6D4;
+}
+
+/* SEARCH */
+.search-input {
+  background: #020617;
+  border: 1px solid #334155;
+  color: #E2E8F0;
+  border-radius: 10px;
+  padding: 6px 12px;
+  width: 180px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #06B6D4;
+  box-shadow: 0 0 8px #06B6D4;
+}
+
+/* NOTIFICATION */
+.notification {
+  position: relative;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background: #6366F1;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
+/* PROFILE */
+.profile {
+  position: relative;
+  cursor: pointer;
+}
+
+.user-avatar {
+  background: linear-gradient(135deg, #06B6D4, #6366F1);
+  color: black;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+/* DROPDOWN */
+.dropdown-menu-custom {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  background: #1E293B;
+  border-radius: 10px;
+  padding: 10px;
+  width: 140px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.dropdown-menu-custom p {
+  margin: 0;
+  padding: 8px;
+  color: #E2E8F0;
+  cursor: pointer;
+}
+
+.dropdown-menu-custom p:hover {
+  background: #334155;
+  border-radius: 6px;
+}
+
+/* Avatar */
+.user-avatar {
+  background: linear-gradient(135deg, #06B6D4, #6366F1);
+  color: black;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+/* Logout Button */
+.logout-btn {
+  background: transparent;
+  border: 1px solid #06B6D4;
+  color: #06B6D4;
+  border-radius: 10px;
+  padding: 6px 14px;
+}
+
+.logout-btn:hover {
+  background: #06B6D4;
+  color: black;
+}
+/* ===== HERO SECTION ===== */
+.hero-section {
+  background: linear-gradient(135deg, rgba(6,182,212,0.2), rgba(99,102,241,0.2));
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.hero-title {
+  font-size: 36px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #06B6D4, #6366F1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ===== PROJECT CARD ===== */
+.project-card {
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 25px;
+  border: 1px solid rgba(255,255,255,0.05);
+
+  position: relative;
+  overflow: hidden;
+
+  box-shadow: 0 10px 25px rgba(6,182,212,0.15);
+  transition: all 0.3s ease;
+}
+
+/* Glow Hover */
+.project-card::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(6,182,212,0.2), transparent);
+  top: -50%;
+  left: -50%;
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.project-card:hover::before {
+  opacity: 1;
+}
+
+.project-card:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+/* ===== TITLE ===== */
+.card-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #E2E8F0;
+}
+
+/* ===== TAGS ===== */
+.tech-tags {
+  margin-top: 10px;
+}
+
+.tag {
+  display: inline-block;
+  background: rgba(6,182,212,0.2);
+  color: #06B6D4;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+/* ===== BUTTON ===== */
+.login-btn {
+  background: linear-gradient(135deg, #06B6D4, #6366F1);
+  border: none;
+  color: black;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 5px 20px rgba(6,182,212,0.4);
+}
+
+.login-btn:hover {
+  transform: scale(1.05);
+}
+.dashboard-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #E2E8F0; /* LIGHT COLOR */
+}
+#projects, #teams {
+  margin-top: 60px;
+}
