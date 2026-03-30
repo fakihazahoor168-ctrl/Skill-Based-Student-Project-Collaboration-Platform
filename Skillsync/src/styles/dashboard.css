@@ -8,6 +8,7 @@
   color: #E2E8F0;
   min-height: 100vh;
   font-family: Arial, sans-serif;
+   display: flex;
 }
 .dashboard-page::before {
   content: "";
@@ -38,10 +39,12 @@
   align-items: center;
 
   margin-bottom: 40px;
+  margin-top: 80px;
 
   border: 1px solid rgba(255,255,255,0.06);
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
+
 
 /* ============================= */
 /* ===== SECTION STYLE ========= */
@@ -49,6 +52,7 @@
 
 .section {
   margin-bottom: 60px;
+  margin-top: 40px;
 }
 
 .section h2 {
@@ -74,14 +78,12 @@
 /* ============================= */
 /* ===== GRID LAYOUT =========== */
 /* ============================= */
-
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 28px;
-  margin-bottom: 35px;
+  grid-template-columns: repeat(3, minmax(280px, 1fr));
+  gap: 30px;
+  width: 100%;
 }
-
 /* ============================= */
 /* ===== STAT CARD (MODERN) ==== */
 /* ============================= */
@@ -354,116 +356,25 @@
   font-weight: 600;
   box-shadow: 0 0 15px rgba(6,182,212,0.3);
 }
-/* MAIN CONTENT SHIFT */
-.main-content {
-  margin-left: 240px;
-  padding: 40px 50px;   /* 👈 more horizontal + vertical space */
-  margin-top: 80px;
-
-  width: calc(100% - 240px);
-}
 input.search-input {
   width: 250px;
 }
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+* {
+  box-sizing: border-box;
 }
-
-/* ============================= */
-/* CREATE PROJECT PAGE */
-/* ============================= */
-
-.create-page {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background: radial-gradient(circle at top left, #0f172a, #020617);
-  padding: 40px;
-}
-
-.create-card {
-  width: 100%;
-  max-width: 500px;
-
-  background: rgba(30, 41, 59, 0.6);
-  backdrop-filter: blur(20px);
-
+.main-content {
+  margin-left: 240px;
+  width: calc(100% - 240px);
   padding: 30px;
-  border-radius: 18px;
+  box-sizing: border-box;
 
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-
-  color: #E2E8F0;
+  flex: 1;   /* 🔥 ADD THIS */
 }
-
-.create-card h1 {
-  font-size: 28px;
-  margin-bottom: 8px;
-
-  background: linear-gradient(90deg, #22D3EE, #A78BFA);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.stat-card,
+.project-card,
+.team-card {
+  min-width: 0;
 }
-
-.create-card p {
-  color: #94A3B8;
-  margin-bottom: 20px;
-}
-
-.create-card form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.create-card label {
-  font-size: 14px;
-  color: #CBD5E1;
-}
-
-.create-card input,
-.create-card textarea {
-  padding: 12px;
-  border-radius: 10px;
-
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(15, 23, 42, 0.6);
-
-  color: white;
-  outline: none;
-}
-
-.create-card textarea {
-  min-height: 100px;
-  resize: none;
-}
-
-.create-card button {
-  margin-top: 10px;
-  padding: 12px;
-
-  border: none;
-  border-radius: 10px;
-
-  background: linear-gradient(135deg, #22D3EE, #6366F1);
-  color: white;
-
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-.create-card button:hover {
-  transform: scale(1.03);
-}
-
-.error {
-  background: rgba(239, 68, 68, 0.15);
-  color: #f87171;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
+.card-grid {
+  outline: 2px solid transparent;
 }

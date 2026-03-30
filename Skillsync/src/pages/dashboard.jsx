@@ -73,15 +73,15 @@ export default function Dashboard() {
 
           <div className="card-grid">
             <ProjectCard
-              title="AI Chatbot"
-              description="Looking for NLP expert"
-              tech={["Python", "AI", "NLP"]}
+              title="AI Chatbot      "
+              description="Looking for NLP expert and MERN "
+              tech={["Python ", "AI ", "NLP"]}
             />
 
             <ProjectCard
               title="E-Commerce App"
-              description="Need frontend developer"
-              tech={["React", "CSS", "API"]}
+              description="Need frontend and backend developer"
+              tech={["React ", "CSS ", "API"]}
             />
 
             <ProjectCard
@@ -89,6 +89,7 @@ export default function Dashboard() {
               description="React Native developers required"
               tech={["React Native", "UI/UX"]}
             />
+        
           </div>
         </div>
 

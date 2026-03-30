@@ -14,6 +14,7 @@ import Explore from "./pages/Explore";
 import CreateProject from "./pages/CreateProject";
 import Landing from "./pages/Landing";
 import RequestPage from "./pages/Requests";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/explore" element={<Explore />} />
         <Route path="/create" element={<CreateProject />} />
         <Route path="/request" element={<RequestPage />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   

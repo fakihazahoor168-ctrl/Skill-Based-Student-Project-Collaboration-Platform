@@ -15,7 +15,7 @@ export default function Sidebar() {
     { name: "Dashboard", path: "/dashboard", icon: <FaHome /> },
     { name: "Explore", path: "/explore", icon: <FaSearch /> },
 { name: "Create Project", path: "/create", icon: <FaPlus /> },
-    { name: "Requests", path: "/requests", icon: <FaEnvelope /> },
+    { name: "Requests", path: "/request", icon: <FaEnvelope /> },
     { name: "Profile", path: "/profile", icon: <FaUser /> }
   ];
 

@@ -1,61 +1,217 @@
-.request-page {
+/* ============================= */
+/* REQUEST PAGE */
+/* ============================= */
+
+.request-page,
+.requests-page {
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 40px 20px;
   background: radial-gradient(circle at top, #0f172a, #020617);
   color: #e2e8f0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+
+/* ============================= */
+/* CARD */
+/* ============================= */
 
 .request-card {
-  width: 400px;
+  width: 100%;
+  max-width: 420px;
   background: rgba(255, 255, 255, 0.05);
-  padding: 25px;
+  padding: 22px;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+
+  transition: all 0.3s ease;
+  margin-bottom: 15px;
 }
 
-.request-card h2 {
+.request-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(34, 211, 238, 0.2);
+}
+
+/* ============================= */
+/* HEADINGS */
+/* ============================= */
+
+.request-card h2,
+.requests-page h2 {
   text-align: center;
   color: #22d3ee;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  font-weight: 700;
 }
 
 .request-card p {
   text-align: center;
   font-size: 14px;
   color: #94a3b8;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
-.request-card textarea {
+/* ============================= */
+/* PROJECT INFO BOX */
+/* ============================= */
+
+.project-info {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ============================= */
+/* FORM */
+/* ============================= */
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 13px;
+  margin-bottom: 5px;
+  color: #cbd5f5;
+}
+
+/* TEXTAREA */
+
+textarea {
   width: 100%;
-  height: 120px;
+  height: 110px;
   padding: 12px;
   border-radius: 10px;
   border: none;
   outline: none;
-  margin-top: 8px;
+
   background: rgba(255,255,255,0.05);
   color: white;
+
   resize: none;
+  transition: 0.2s ease;
 }
 
-.request-card button {
-  width: 100%;
+textarea:focus {
+  border: 1px solid #22d3ee;
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+}
+
+/* ============================= */
+/* BUTTON */
+/* ============================= */
+
+button {
   margin-top: 15px;
   padding: 12px;
-  border: none;
   border-radius: 10px;
+  border: none;
   cursor: pointer;
-  background: linear-gradient(90deg, #22d3ee, #6366f1);
-  color: #0f172a;
   font-weight: 600;
-  transition: 0.3s;
+
+  transition: all 0.25s ease;
 }
 
-.request-card button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(34, 211, 238, 0.3);
+/* SEND BUTTON */
+
+button[type="submit"] {
+  background: linear-gradient(90deg, #22d3ee, #6366f1);
+  color: #0f172a;
+}
+
+button[type="submit"]:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(34, 211, 238, 0.3);
+}
+
+/* ============================= */
+/* OWNER REQUEST PAGE */
+/* ============================= */
+
+.requests-page {
+  justify-content: flex-start;
+}
+
+/* REQUEST LIST CARD */
+
+.requests-page .request-card {
+  max-width: 500px;
+}
+
+/* ACTION BUTTONS */
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.accept {
+  flex: 1;
+  background: #22d3ee;
+  color: #0f172a;
+}
+
+.reject {
+  flex: 1;
+  background: #ef4444;
+  color: white;
+}
+
+.accept:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(34, 211, 238, 0.3);
+}
+
+.reject:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+}
+
+/* ============================= */
+/* EMPTY STATE */
+/* ============================= */
+
+.requests-page p {
+  color: #94a3b8;
+  margin-top: 20px;
+}
+
+/* ============================= */
+/* RESPONSIVE */
+/* ============================= */
+
+@media (max-width: 500px) {
+  .request-card {
+    padding: 16px;
+  }
+
+  textarea {
+    height: 90px;
+  }
+}
+/* SECTION */
+.section {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 40px;
+}
+
+.section h3 {
+  color: #22d3ee;
+  margin-bottom: 10px;
+}
+
+/* STACK CARDS */
+.section .request-card {
+  max-width: 100%;
 }

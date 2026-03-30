@@ -58,8 +58,8 @@ export default function Navbar() {
         </Link>
 
         <Link 
-          className={`nav-link ${location.pathname === "/requests" ? "active-link" : ""}`} 
-          to="/requests"
+          className={`nav-link ${location.pathname === "/request" ? "active-link" : ""}`} 
+          to="/request"
         >
           Requests
         </Link>

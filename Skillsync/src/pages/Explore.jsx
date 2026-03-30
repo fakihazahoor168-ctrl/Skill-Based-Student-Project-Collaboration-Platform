@@ -10,13 +10,13 @@ export default function Explore() {
   const projects = [
     {
       title: "AI Chatbot",
-      description: "Looking for NLP expert",
-      tech: ["Python", "AI", "NLP"]
+      description: "Looking for NLP expert and MERN ",
+      tech: ["Python ", "AI ", "NLP"]
     },
     {
       title: "E-Commerce App",
-      description: "Need frontend developer",
-      tech: ["React", "CSS", "API"]
+      description: "Need frontend and backend developer",
+      tech: ["React ", "CSS ", "API"]
     },
     {
       title: "Portfolio Website",

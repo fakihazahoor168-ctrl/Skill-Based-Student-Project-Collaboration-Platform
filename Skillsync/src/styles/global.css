@@ -1,3 +1,4 @@
+/* ============================= */
 /* RESET */
 * {
   margin: 0;
@@ -5,22 +6,63 @@
   box-sizing: border-box;
 }
 
-/* BODY */
+/* ============================= */
+/* BODY BASE */
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
 body {
   background: radial-gradient(circle at top left, #0f172a, #020617);
   color: #E2E8F0;
+
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  overflow-x: hidden;   /* 🔥 prevents horizontal scroll bug */
 }
 
-/* BRAND */
+/* ============================= */
+/* BRAND TEXT */
 .brand-title {
   font-size: 32px;
+  font-weight: 700;
+
   background: linear-gradient(90deg, #06B6D4, #6366F1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* TEXT */
+/* ============================= */
+/* TEXT UTILITIES */
 .text-secondary {
   color: #CBD5F5 !important;
+}
+
+/* ============================= */
+/* REMOVE DEFAULT LINK STYLE */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ============================= */
+/* BUTTON RESET (IMPORTANT FOR UI CONSISTENCY) */
+button {
+  font-family: inherit;
+}
+
+/* ============================= */
+/* SCROLLBAR (OPTIONAL BUT PREMIUM LOOK) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #06B6D4, #6366F1);
+  border-radius: 10px;
 }

@@ -1,0 +1,123 @@
+/* ============================= */
+/* CREATE PROJECT PAGE ONLY */
+/* ============================= */
+
+.create-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: radial-gradient(circle at top left, #0f172a, #020617);
+
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+/* CARD */
+.create-card {
+  width: 100%;
+  max-width: 520px;
+
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(20px);
+
+  padding: 32px;
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+
+  color: #E2E8F0;
+}
+
+/* TITLE */
+.create-card h1 {
+  font-size: 28px;
+  margin-bottom: 6px;
+
+  background: linear-gradient(90deg, #22D3EE, #A78BFA);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* SUBTEXT */
+.create-card p {
+  color: #94A3B8;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* FORM */
+.create-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* LABEL */
+.create-card label {
+  font-size: 13px;
+  color: #CBD5E1;
+}
+
+/* INPUT + TEXTAREA */
+.create-card input,
+.create-card textarea {
+  padding: 12px 14px;
+  border-radius: 10px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(15, 23, 42, 0.7);
+
+  color: white;
+  outline: none;
+
+  transition: 0.3s ease;
+}
+
+/* FOCUS EFFECT */
+.create-card input:focus,
+.create-card textarea:focus {
+  border-color: #06B6D4;
+  box-shadow: 0 0 0 2px rgba(6,182,212,0.2);
+}
+
+/* TEXTAREA */
+.create-card textarea {
+  min-height: 120px;
+  resize: none;
+}
+
+/* BUTTON */
+.create-card button {
+  margin-top: 10px;
+  padding: 12px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, #22D3EE, #6366F1);
+  color: white;
+
+  cursor: pointer;
+  font-weight: 600;
+
+  transition: 0.3s ease;
+}
+
+.create-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+}
+
+/* ERROR BOX */
+.error {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+
+  padding: 10px;
+  border-radius: 8px;
+
+  font-size: 13px;
+}

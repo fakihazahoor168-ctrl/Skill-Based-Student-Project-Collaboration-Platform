@@ -1,18 +1,22 @@
 
 /* ===== PROJECT CARD ===== */
 .project-card {
-  background: rgba(30, 41, 59, 0.8);
-  backdrop-filter: blur(20px);
-  border-radius: 20px;
-  padding: 25px;
+  position: relative;   /* 🔥 IMPORTANT FIX */
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(15px);
 
-  border: 1px solid rgba(255,255,255,0.05);
-  box-shadow: 0 10px 25px rgba(6,182,212,0.15);
+  padding: 20px;
+  border-radius: 14px;
+
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+
+  color: #E2E8F0;
 
   transition: all 0.3s ease;
+  overflow: hidden;
 }
 
-/* HOVER MAGIC 🔥 */
 .project-card:hover {
   transform: translateY(-10px) scale(1.03);
   box-shadow: 0 15px 40px rgba(6,182,212,0.3);
@@ -30,9 +34,7 @@
   transition: 0.4s;
 }
 
-.project-card:hover {
-  transform: translateY(-8px) scale(1.02);
-}
+
 .card-title {
   font-size: 22px;
   font-weight: 700;
