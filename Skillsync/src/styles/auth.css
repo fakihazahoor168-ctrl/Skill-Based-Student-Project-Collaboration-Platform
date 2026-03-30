@@ -1,0 +1,95 @@
+
+/* ===== GLOW EFFECTS ===== */
+.bg-glow {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background: #06B6D4;
+  opacity: 0.25;
+  filter: blur(140px);
+  border-radius: 50%;
+  top: -50px;
+  left: -50px;
+}
+
+.bg-glow2 {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background: #6366F1;
+  opacity: 0.25;
+  filter: blur(140px);
+  border-radius: 50%;
+  bottom: -50px;
+  right: -50px;
+}
+
+/* ===== LOGIN CARD ===== */
+.login-card {
+  background: rgba(30, 41, 59, 0.75);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 45px 35px;
+  width: 360px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(6, 182, 212, 0.1);
+}
+
+/* ===== TITLE ===== */
+.login-card h2 {
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* ===== INPUT FIELDS ===== */
+.form-control {
+  background-color: #020617 !important;
+  border: 1px solid #334155 !important;
+  color: #E2E8F0 !important;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.form-control::placeholder {
+  color: #64748B;
+}
+
+/* Focus Effect */
+.form-control:focus {
+  border-color: #06B6D4 !important;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.6) !important;
+}
+
+/* ===== BUTTON ===== */
+.login-btn {
+  background: linear-gradient(135deg, #06B6D4, #6366F1);
+  border: none;
+  color: black;
+  font-weight: 600;
+  padding: 12px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 5px 20px rgba(6, 182, 212, 0.4);
+}
+
+/* Hover Effect */
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.6);
+}
+
+/* ===== GOOGLE BUTTON ===== */
+.btn-outline-light {
+  border-radius: 10px;
+  border-color: #475569;
+  color: #E2E8F0;
+}
+
+.btn-outline-light:hover {
+  background: #020617;
+  border-color: #06B6D4;
+  color: #06B6D4;
+}

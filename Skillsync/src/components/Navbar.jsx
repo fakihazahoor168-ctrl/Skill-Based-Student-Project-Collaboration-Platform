@@ -1,28 +1,68 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef();
+
+  // 🔹 Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleLogout = () => {
-    navigate("/");
+    navigate("/login");
   };
 
   return (
     <nav className="navbar-custom px-4 py-3 d-flex justify-content-between align-items-center">
 
       {/* LEFT: LOGO */}
-      <div className="d-flex align-items-center gap-2">
-        <span className="logo-icon">🚀</span>
-        <h3 className="brand-title m-0">TeamUp</h3>
-      </div>
+      <div 
+  className="d-flex align-items-center gap-2"
+  onClick={() => navigate("/")}
+  style={{ cursor: "pointer" }}
+>
+  <img 
+    src={logo} 
+    alt="TeamUp Logo" 
+    className="navbar-logo"
+  />
+  <h3 className="brand-title m-0">TeamUp</h3>
+</div>
 
       {/* CENTER: NAV LINKS */}
       <div className="nav-links d-none d-md-flex gap-4">
-        <span className="nav-link" onClick={() => window.scrollTo(0, 300)}>Explore</span>
-        <span className="nav-link" onClick={() => window.scrollTo(0, 800)}>My Projects</span>
-        <span className="nav-link" onClick={() => window.scrollTo(0, 1200)}>Teams</span>
+        <Link 
+          className={`nav-link ${location.pathname === "/Explore" ? "active-link" : ""}`} 
+          to="/explore"
+        >
+          Explore
+        </Link>
+
+        <Link 
+          className={`nav-link ${location.pathname === "/dashboard" ? "active-link" : ""}`} 
+          to="/dashboard"
+        >
+          Dashboard
+        </Link>
+
+        <Link 
+          className={`nav-link ${location.pathname === "/requests" ? "active-link" : ""}`} 
+          to="/requests"
+        >
+          Requests
+        </Link>
       </div>
 
       {/* RIGHT SIDE */}
@@ -42,12 +82,17 @@ export default function Navbar() {
         </div>
 
         {/* PROFILE */}
-        <div className="profile" onClick={() => setOpen(!open)}>
-          <span className="user-avatar">FZ</span>
+        <div className="profile" ref={dropdownRef}>
+          <span 
+            className="user-avatar"
+            onClick={() => setOpen(!open)}
+          >
+            FZ
+          </span>
 
           {open && (
             <div className="dropdown-menu-custom">
-              <p>Profile</p>
+              <p onClick={() => navigate("/profile")}>Profile</p>
               <p>Settings</p>
               <p onClick={handleLogout}>Logout</p>
             </div>

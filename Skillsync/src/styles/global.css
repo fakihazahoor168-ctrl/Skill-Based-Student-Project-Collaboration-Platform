@@ -1,0 +1,26 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BODY */
+body {
+  background: radial-gradient(circle at top left, #0f172a, #020617);
+  color: #E2E8F0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* BRAND */
+.brand-title {
+  font-size: 32px;
+  background: linear-gradient(90deg, #06B6D4, #6366F1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* TEXT */
+.text-secondary {
+  color: #CBD5F5 !important;
+}

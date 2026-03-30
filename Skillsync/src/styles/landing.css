@@ -1,0 +1,315 @@
+/* ============================= */
+/* LANDING PAGE */
+/* ============================= */
+.landing-page {
+  background: radial-gradient(circle at top, #0f172a, #020617);
+  color: #e2e8f0;
+  font-family: "Segoe UI", sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* NAVBAR */
+.landing-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 60px;
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(12px);
+  background: rgba(15, 23, 42, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  z-index: 100;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #22d3ee;
+}
+
+.nav-buttons button {
+  margin-left: 10px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  transition: 0.3s;
+}
+
+.nav-buttons button:hover {
+  background: #22d3ee;
+  color: #0f172a;
+}
+
+
+/* HERO */
+.landing-hero {
+  text-align: center;
+  padding: 70px 20px 40px;
+  position: relative;
+}
+
+/* Main heading */
+.landing-hero h1 {
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  max-width: 900px;
+  margin: auto;
+}
+
+/* Gradient highlight */
+.landing-hero span {
+  background: linear-gradient(90deg, #22d3ee, #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Sub glow effect under hero */
+.landing-hero::after {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(34,211,238,0.2), transparent 70%);
+  filter: blur(60px);
+  z-index: 0;
+}
+
+/* Buttons */
+.hero-buttons {
+  position: relative;
+  z-index: 2;
+    margin-top: 40px;   
+}
+
+.hero-buttons button {
+  all: unset;
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  position: relative;
+  z-index: 2;
+}
+.landing-page .hero-buttons button {
+  all: unset;               /* removes ALL conflicts */
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  margin: 0 6px;
+}
+
+/* FIRST BUTTON */
+.landing-page .hero-buttons button:first-child {
+  background: linear-gradient(90deg, #22d3ee, #6366f1);
+  color: #0f172a;
+}
+
+/* SECOND BUTTON */
+.landing-page .hero-buttons button:last-child {
+  background: transparent;
+  border: 1px solid #22d3ee;
+  color: #22d3ee;
+}
+
+.hero-buttons button:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(34, 211, 238, 0.35);
+}
+.landing-hero::after {
+  pointer-events: none;
+  z-index: 0;
+}
+.about-section,
+.stats-section,
+.how-section,
+.testimonials,
+.faq-section {
+  padding: 30px 20px;
+  margin-top: 35px;
+}
+
+/* HOW SECTION */
+.how-section {
+  margin-top: 80px;
+  text-align: center;
+}
+
+.how-section h2 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #22D3EE;
+}
+
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 20px;
+  .how-grid {
+  gap: 10px;   /* was 15px–20px */
+}
+
+}
+
+.how-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 14px;
+  transition: 0.3s;
+}
+
+.how-card:hover {
+  transform: translateY(-6px);
+  border: 1px solid #22d3ee;
+}
+
+.how-card h3 {
+  margin-bottom: 10px;
+}
+
+/* FOOTER */
+.landing-footer {
+  text-align: center;
+  margin-top: 80px;
+  color: #94A3B8;
+}
+.about-section {
+  margin-top: 80px;
+  text-align: center;
+  padding: 40px;
+}
+
+.about-section h2 {
+  color: #22D3EE;
+  margin-bottom: 10px;
+}
+
+.about-section p {
+  max-width: 700px;
+  margin: auto;
+  color: #94a3b8;
+  line-height: 1.6;
+}
+.stats-section {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.stat {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 25px;
+  border-radius: 16px;
+  width: 200px;
+  transition: 0.3s;
+}
+
+.stat:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(34, 211, 238, 0.2);
+}
+
+.stat h3 {
+  color: #22d3ee;
+  font-size: 28px;
+}
+.testimonials {
+  margin-top: 80px;
+  text-align: center;
+}
+.testimonials h2{
+    color: #22D3EE;
+}
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.testimonial-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 25px;
+  border-radius: 14px;
+  transition: 0.3s;
+}
+
+.testimonial-card:hover {
+  transform: scale(1.05);
+}
+.faq-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;   /* 👈 clean spacing between FAQs */
+  .faq-section {
+  text-align: center;
+}
+}
+.faq-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+   color: #22D3EE;
+}
+
+.faq {
+  background: rgba(255, 255, 255, 0.05);
+  margin: 8px auto;
+  padding: 12px;
+  max-width: 700px;
+  border-radius: 10px;
+  text-align: left;
+  transition: 0.3s;
+}
+
+.faq:hover {
+  border-left: 4px solid #22d3ee;
+}
+.landing-footer {
+  text-align: center;
+  padding: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: #64748b;
+  margin-top: 50px;
+}
+.landing-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(6, 182, 212, 0.6);
+  transition: 0.3s ease;
+}
+
+.landing-logo:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 700;
+  color: #E2E8F0;
+}
+.how-card,
+.testimonial-card,
+.faq {
+  max-width: 300px;   /* 👈 controls “chorai” */
+  width: 100%;
+  margin: auto;
+}

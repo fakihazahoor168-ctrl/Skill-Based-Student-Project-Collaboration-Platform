@@ -1,72 +1,130 @@
 import React from "react";
+import ProjectCard from "../components/ProjectCard";
+import Footer from "../components/footer";
 import Navbar from "../components/Navbar";
-import ProjectCard from "../components/Projectcard";
+import Sidebar from "../components/Sidebar";
+import { useNavigate } from "react-router-dom";
+
+import { FaBolt, FaFire, FaUsers } from "react-icons/fa";
+import { FiUserPlus } from "react-icons/fi";
+import { MdTrendingUp } from "react-icons/md";
 
 export default function Dashboard() {
+  const navigate = useNavigate();
+
   return (
-    <div>
+    <div className="dashboard-page">
 
-      {/* Navbar */}
-      <Navbar />
+<Navbar />
+ <Sidebar />
+      {/* 🔷 MAIN CONTENT */}
+      <div className="main-content">
+      <div className="container mt-4">
 
-     <div className="container mt-5 pt-4">
+        {/* HERO SECTION */}
+        <div className="hero-card">
+          <div>
+            <h1>Welcome back, Fakiha 👋</h1>
+            <p>Let’s build something amazing today 🚀</p>
+          </div>
 
-        {/* 🔹 EXPLORE SECTION */}
-        <div id="explore" className="hero-section p-4 mb-5">
-          <h1 className="hero-title">Find Your Dream Team 🚀</h1>
-          <p className="text-secondary">
-            Collaborate, build projects, and grow your skills.
-          </p>
-          <button className="btn login-btn mt-3">+ Create Project</button>
+          <button
+            className="btn login-btn"
+            onClick={() => navigate("/create")}
+          >
+            + Create Project
+          </button>
         </div>
 
-        {/* 🔹 PROJECTS SECTION */}
-        <div id="projects" className="mt-5">
-         <h2 className="dashboard-title mb-4">🔥 Trending Projects</h2>
+        {/* STATS CARDS */}
+        <div className="card-grid">
 
-          <div className="row g-4">
-            <div className="col-md-6 col-lg-4">
-              <ProjectCard 
-                title="AI Chatbot"
-                description="Looking for NLP expert"
-                tech={["Python", "AI", "NLP"]}
-              />
-            </div>
+          <div className="stat-card">
+            <h3>5</h3>
+            <p>Projects Created</p>
+          </div>
 
-            <div className="col-md-6 col-lg-4">
-              <ProjectCard 
-                title="E-Commerce App"
-                description="Need frontend developer"
-                tech={["React", "CSS", "API"]}
-              />
-            </div>
+          <div className="stat-card">
+            <h3>3</h3>
+            <p>Join Requests</p>
+          </div>
 
-            <div className="col-md-6 col-lg-4">
-              <ProjectCard 
-                title="Mobile App"
-                description="React Native developers required"
-                tech={["React Native", "UI/UX"]}
-              />
-            </div>
+          <div className="stat-card">
+            <h3>2</h3>
+            <p>Active Teams</p>
+          </div>
+
+        </div>
+
+        {/* QUICK ACTIONS */}
+        <div className="section">
+       <h2><FaBolt className="section-icon" /> Quick Actions</h2>
+
+          <div className="action-grid">
+            <button onClick={() => navigate("/Explore")}>Explore Projects</button>
+            <button onClick={() => navigate("/profile")}>View Profile</button>
+            <button onClick={() => navigate("/requests")}>Join Requests</button>
           </div>
         </div>
 
-        {/* 🔹 TEAMS SECTION */}
-        <div id="teams" className="mt-5 pt-4">
-        <h2 className="dashboard-title">👥 Active Teams</h2>
-          <p className="text-secondary">
-            Join teams and collaborate with developers.
-          </p>
+        {/* TRENDING PROJECTS */}
+        <div className="section">
+       <h2><MdTrendingUp className="section-icon" /> Trending Projects</h2>
 
-          <div className="project-card mt-3">
-            <h3 className="card-title">Team Alpha</h3>
-            <p className="text-secondary small">
-              Working on AI based recommendation system
-            </p>
+          <div className="card-grid">
+            <ProjectCard
+              title="AI Chatbot"
+              description="Looking for NLP expert"
+              tech={["Python", "AI", "NLP"]}
+            />
+
+            <ProjectCard
+              title="E-Commerce App"
+              description="Need frontend developer"
+              tech={["React", "CSS", "API"]}
+            />
+
+            <ProjectCard
+              title="Mobile App"
+              description="React Native developers required"
+              tech={["React Native", "UI/UX"]}
+            />
+          </div>
+        </div>
+
+        {/* SUGGESTED TEAMMATES */}
+        <div className="section">
+         <h2><FaUsers className="section-icon" /> Suggested Teammates</h2>
+
+          <div className="card-grid">
+
+            <div className="team-card">
+              <h4>Ahmed</h4>
+              <p>React + AI</p>
+              <button>Invite</button>
+            </div>
+
+            <div className="team-card">
+              <h4>Ali</h4>
+              <p>Node + Backend</p>
+              <button>Invite</button>
+            </div>
+
+            <div className="team-card">
+              <h4>Sara</h4>
+              <p>UI/UX Designer</p>
+              <button>Invite</button>
+            </div>
+
           </div>
         </div>
 
       </div>
+
+      {/* FOOTER */}
+      <Footer />
+
+    </div>
     </div>
   );
 }
