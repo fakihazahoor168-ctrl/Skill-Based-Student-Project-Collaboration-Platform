@@ -378,3 +378,76 @@ input.search-input {
 .card-grid {
   outline: 2px solid transparent;
 }
+.project-card button {
+  margin-right: 8px;
+  margin-top: 10px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #111827;
+  color: white;
+  transition: 0.3s;
+}
+
+.project-card button:hover {
+  background: #06B6D4;
+  transform: scale(1.05);
+}
+.chat-box {
+  background: rgba(30, 41, 59, 0.6);
+  padding: 15px;
+  border-radius: 12px;
+  height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.chat-message {
+  margin-bottom: 8px;
+  color: #E2E8F0;
+  font-size: 14px;
+}
+
+.chat-input {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #111827;
+  color: white;
+}
+
+.chat-input button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background: #06B6D4;
+  color: black;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.chat-input button:hover {
+  transform: scale(1.05);
+}
+.chat-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0;
+}
+.chat-center .section {
+  width: 60%;
+  background: rgba(30, 41, 59, 0.7);
+  padding: 20px;
+  border-radius: 16px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}

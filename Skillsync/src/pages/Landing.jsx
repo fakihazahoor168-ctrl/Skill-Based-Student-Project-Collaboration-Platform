@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/landing.css";
 import logo from "../assets/logo.png";
+import Footer from "../components/footer";
 
 export default function Landing() {
   const navigate = useNavigate();
@@ -139,11 +140,7 @@ export default function Landing() {
         </div>
 
       </div>
-
-      {/* FOOTER */}
-      <div className="landing-footer">
-        <p>© 2026 SkillSync. All rights reserved.</p>
-      </div>
+<Footer />
 
     </div>
   );

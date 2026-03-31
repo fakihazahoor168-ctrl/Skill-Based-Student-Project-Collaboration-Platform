@@ -1,10 +1,10 @@
 import React from "react";
 import "../styles/profile.css";
-import profilePic from "../assets/logo.png"; // replace later with user image
+import profilePic from "../assets/logo.png";
+import Sidebar from "../components/Sidebar";
 
 export default function Profile() {
 
-  // 🔥 Dummy data (later replace with backend)
   const user = {
     name: "Fakiha Zahoor",
     bio: "Frontend Developer passionate about building modern UI/UX.",
@@ -14,51 +14,85 @@ export default function Profile() {
   };
 
   return (
-    <div className="profile-page">
+    <div className="profile-layout">
 
-      {/* HEADER */}
-      <div className="profile-header">
+     <div className="sidebar">
+    <Sidebar />
+  </div>
 
-        <img src={profilePic} alt="profile" className="profile-pic" />
+      {/* MAIN CONTENT */}
+      <div className="profile-main">
 
-        <h2>{user.name}</h2>
-        <p className="bio">{user.bio}</p>
+        {/* HEADER */}
+        <div className="profile-header">
 
-        <button className="edit-btn">Edit Profile</button>
+          <img src={profilePic} alt="profile" />
 
-      </div>
+          <div>
+            <h2>{user.name}</h2>
+            <p className="bio">{user.bio}</p>
+            <p className="status">🟢 Online</p>
+          </div>
 
-      {/* SKILLS */}
-      <div className="profile-section">
-        <h3>Skills</h3>
+          <button className="edit-btn">Edit Profile</button>
 
-        <div className="skills">
-          {user.skills.map((skill, index) => (
-            <span key={index} className="skill-tag">{skill}</span>
-          ))}
         </div>
-      </div>
 
-      {/* CREATED PROJECTS */}
-      <div className="profile-section">
-        <h3>Projects Created</h3>
+        {/* STATS */}
+        <div className="stats-row">
 
-        {user.createdProjects.map((proj, index) => (
-          <div key={index} className="project-card">
-            {proj}
+          <div className="stat-card">
+            <h3>12</h3>
+            <p>Projects</p>
           </div>
-        ))}
-      </div>
 
-      {/* JOINED PROJECTS */}
-      <div className="profile-section">
-        <h3>Joined Projects</h3>
-
-        {user.joinedProjects.map((proj, index) => (
-          <div key={index} className="project-card">
-            {proj}
+          <div className="stat-card">
+            <h3>5</h3>
+            <p>Teams</p>
           </div>
-        ))}
+
+          <div className="stat-card">
+            <h3>120</h3>
+            <p>Connections</p>
+          </div>
+
+        </div>
+
+        {/* CONTENT GRID */}
+        <div className="profile-grid">
+
+          <div className="card">
+            <h3>Skills</h3>
+            <div className="skills">
+              {user.skills.map((skill, i) => (
+                <span key={i}>{skill}</span>
+              ))}
+            </div>
+          </div>
+
+          <div className="card">
+            <h3>Recent Activity</h3>
+            <p>✔ Created AI Chat App</p>
+            <p>✔ Joined Task Manager</p>
+            <p>✔ Updated profile</p>
+          </div>
+
+          <div className="card full">
+            <h3>Projects Created</h3>
+            {user.createdProjects.map((p, i) => (
+              <div key={i} className="item">{p}</div>
+            ))}
+          </div>
+
+          <div className="card full">
+            <h3>Joined Projects</h3>
+            {user.joinedProjects.map((p, i) => (
+              <div key={i} className="item">{p}</div>
+            ))}
+          </div>
+
+        </div>
+
       </div>
 
     </div>

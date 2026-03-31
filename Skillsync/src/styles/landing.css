@@ -280,13 +280,7 @@
 .faq:hover {
   border-left: 4px solid #22d3ee;
 }
-.landing-footer {
-  text-align: center;
-  padding: 30px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  color: #64748b;
-  margin-top: 50px;
-}
+
 .landing-logo {
   width: 40px;
   height: 40px;
@@ -312,4 +306,44 @@
   max-width: 300px;   /* 👈 controls “chorai” */
   width: 100%;
   margin: auto;
+}
+.modern-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 50px 60px;
+  background: rgba(2, 6, 23, 0.9);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  margin-top: 80px;
+}
+
+.footer-brand h2 {
+  color: #22d3ee;
+}
+
+.footer-brand p {
+  color: #94a3b8;
+}
+
+.footer-links {
+  display: flex;
+  gap: 50px;
+}
+
+.footer-links h4 {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  display: block;
+  color: #94a3b8;
+  text-decoration: none;
+  margin: 6px 0;
+  transition: 0.3s;
+}
+
+.footer-links a:hover {
+  color: #22d3ee;
+  transform: translateX(4px);
 }

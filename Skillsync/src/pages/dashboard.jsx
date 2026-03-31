@@ -25,7 +25,7 @@ export default function Dashboard() {
         <div className="hero-card">
           <div>
             <h1>Welcome back, Fakiha 👋</h1>
-            <p>Let’s build something amazing today 🚀</p>
+            <p>Let’s build something amazing today </p>
           </div>
 
           <button
@@ -66,7 +66,52 @@ export default function Dashboard() {
             <button onClick={() => navigate("/requests")}>Join Requests</button>
           </div>
         </div>
+{/* 📁 MY PROJECTS */}
+<div className="section">
+  <h2>📁 My Projects</h2>
 
+  <div className="card-grid">
+
+    <div className="project-card">
+      <h3>Portfolio Website</h3>
+      <p>React + CSS portfolio project</p>
+      <button>Edit</button>
+      <button>Delete</button>
+    </div>
+
+    <div className="project-card">
+      <h3>Team Finder App</h3>
+      <p>MERN stack collaboration platform</p>
+      <button>Edit</button>
+      <button>Delete</button>
+    </div>
+
+  </div>
+</div>
+{/* 💬 CENTER CHAT SECTION */}
+<div className="chat-center">
+
+  <div className="section">
+    <h2>💬 Team Chat</h2>
+
+    <div className="chat-box">
+      <div className="chat-message">
+        <b>Ali:</b> Hey team 👋
+      </div>
+
+      <div className="chat-message">
+        <b>Sara:</b> UI ready 👍
+      </div>
+    </div>
+
+    <div className="chat-input">
+      <input type="text" placeholder="Type message..." />
+      <button>Send</button>
+    </div>
+
+  </div>
+
+</div>
         {/* TRENDING PROJECTS */}
         <div className="section">
        <h2><MdTrendingUp className="section-icon" /> Trending Projects</h2>
