@@ -1,100 +1,84 @@
 import React from "react";
 import "../styles/profile.css";
-import profilePic from "../assets/logo.png";
 import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
+import profilePic from "../assets/logo.png";
 
 export default function Profile() {
-
-  const user = {
-    name: "Fakiha Zahoor",
-    bio: "Frontend Developer passionate about building modern UI/UX.",
-    skills: ["React", "JavaScript", "CSS", "Node.js"],
-    createdProjects: ["AI Chat App", "E-commerce Website"],
-    joinedProjects: ["Portfolio Builder", "Task Manager"]
-  };
-
   return (
     <div className="profile-layout">
 
-     <div className="sidebar">
-    <Sidebar />
-  </div>
+      {/* SIDEBAR */}
+      <Sidebar />
 
-      {/* MAIN CONTENT */}
-      <div className="profile-main">
+      {/* RIGHT SIDE (NAVBAR + CONTENT) */}
+      <div className="profile-right">
 
-        {/* HEADER */}
-        <div className="profile-header">
+        {/* NAVBAR */}
+        <Navbar />
 
-          <img src={profilePic} alt="profile" />
+        {/* MAIN CONTENT */}
+        <div className="profile-main">
 
-          <div>
-            <h2>{user.name}</h2>
-            <p className="bio">{user.bio}</p>
-            <p className="status">🟢 Online</p>
-          </div>
+          <h2 className="page-title">My Profile</h2>
 
-          <button className="edit-btn">Edit Profile</button>
+          <div className="profile-grid">
 
-        </div>
+            {/* LEFT PROFILE CARD */}
+            <div className="profile-card">
 
-        {/* STATS */}
-        <div className="stats-row">
+              <img src={profilePic} alt="profile" />
 
-          <div className="stat-card">
-            <h3>12</h3>
-            <p>Projects</p>
-          </div>
+              <h3>Fakiha Zahoor</h3>
+              <p className="sub">Frontend Developer</p>
 
-          <div className="stat-card">
-            <h3>5</h3>
-            <p>Teams</p>
-          </div>
+              <div className="info">
+                <p><b>Email:</b> fakiha@email.com</p>
+                <p><b>Phone:</b> +92 300 1234567</p>
+              </div>
 
-          <div className="stat-card">
-            <h3>120</h3>
-            <p>Connections</p>
-          </div>
+              <button className="save-btn">Save</button>
 
-        </div>
-
-        {/* CONTENT GRID */}
-        <div className="profile-grid">
-
-          <div className="card">
-            <h3>Skills</h3>
-            <div className="skills">
-              {user.skills.map((skill, i) => (
-                <span key={i}>{skill}</span>
-              ))}
             </div>
-          </div>
 
-          <div className="card">
-            <h3>Recent Activity</h3>
-            <p>✔ Created AI Chat App</p>
-            <p>✔ Joined Task Manager</p>
-            <p>✔ Updated profile</p>
-          </div>
+            {/* RIGHT SIDE */}
+            <div className="right-cards">
 
-          <div className="card full">
-            <h3>Projects Created</h3>
-            {user.createdProjects.map((p, i) => (
-              <div key={i} className="item">{p}</div>
-            ))}
-          </div>
+              <div className="small-card">
+                <h4>My Projects</h4>
 
-          <div className="card full">
-            <h3>Joined Projects</h3>
-            {user.joinedProjects.map((p, i) => (
-              <div key={i} className="item">{p}</div>
-            ))}
+                <div className="row">
+                  <span>Portfolio Website</span>
+                  <button className="view-btn">View</button>
+                </div>
+
+                <div className="row">
+                  <span>Team Finder App</span>
+                  <button className="view-btn">View</button>
+                </div>
+              </div>
+
+              <div className="small-card">
+                <h4>Team Activity</h4>
+
+                <div className="row">
+                  <span>Ahmed joined your project</span>
+                  <span className="green-dot"></span>
+                </div>
+
+                <div className="row">
+                  <span>Request accepted</span>
+                  <span className="green-dot"></span>
+                </div>
+
+              </div>
+
+            </div>
+
           </div>
 
         </div>
-
       </div>
-
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import "../styles/sidebar.css";
 import { 
   FaHome, 
   FaSearch, 
@@ -22,7 +23,7 @@ export default function Sidebar() {
   return (
     <div className="sidebar">
 
-      <div className="sidebar-logo">🚀 TeamUp</div>
+      <div className="sidebar-logo">TeamUp</div>
 
       <div className="sidebar-menu">
         {menu.map((item, index) => (
