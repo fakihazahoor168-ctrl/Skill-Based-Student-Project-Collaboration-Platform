@@ -15,11 +15,9 @@ export default function Dashboard() {
   return (
     <div className="dashboard-page">
 
-<Navbar />
- <Sidebar />
       {/* 🔷 MAIN CONTENT */}
       <div className="main-content">
-      <div className="container mt-4">
+     <div className="dashboard-container">
 
         {/* HERO SECTION */}
         <div className="hero-card">

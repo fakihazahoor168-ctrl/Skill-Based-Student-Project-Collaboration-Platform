@@ -33,9 +33,6 @@ export default function Explore() {
   return (
     <div className="dashboard-page">
 
-      <Navbar />
-      <Sidebar />
-
       <div className="main-content">
 
         <div className="container">

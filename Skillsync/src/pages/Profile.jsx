@@ -7,16 +7,8 @@ import profilePic from "../assets/logo.png";
 export default function Profile() {
   return (
     <div className="profile-layout">
-
-      {/* SIDEBAR */}
-      <Sidebar />
-
       {/* RIGHT SIDE (NAVBAR + CONTENT) */}
       <div className="profile-right">
-
-        {/* NAVBAR */}
-        <Navbar />
-
         {/* MAIN CONTENT */}
         <div className="profile-main">
 

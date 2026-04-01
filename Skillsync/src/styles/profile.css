@@ -26,8 +26,6 @@
 ========================= */
 
 .profile-right {
-  margin-left: 240px;
-  width: calc(100% - 240px);
   display: flex;
   flex-direction: column;
 }
@@ -225,16 +223,5 @@
 
   .right-cards {
     max-width: 100%;
-  }
-
-  .profile-right {
-    margin-left: 0;
-    width: 100%;
-  }
-
-  .sidebar {
-    position: relative;
-    width: 100%;
-    height: auto;
   }
 }

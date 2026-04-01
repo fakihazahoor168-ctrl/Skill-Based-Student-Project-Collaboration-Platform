@@ -1,15 +1,30 @@
 /* ============================= */
+/* ===== GLOBAL RESET ========= */
+/* ============================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* ============================= */
 /* ===== PAGE BACKGROUND ======= */
 /* ============================= */
 
 .dashboard-page {
+  position: relative;
+  overflow: hidden;
+
   background: radial-gradient(circle at top left, #0f172a, #020617);
   min-height: 100vh;
   color: #E2E8F0;
-  min-height: 100vh;
-  font-family: Arial, sans-serif;
-   display: flex;
+  display: flex;
 }
+
 .dashboard-page::before {
   content: "";
   position: absolute;
@@ -21,6 +36,18 @@
   top: -100px;
   left: -100px;
   z-index: 0;
+}
+
+/* ============================= */
+/* ===== MAIN CONTENT ========= */
+/* ============================= */
+
+.main-content {
+  padding: 30px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 /* ============================= */
@@ -38,21 +65,19 @@
   justify-content: space-between;
   align-items: center;
 
-  margin-bottom: 40px;
   margin-top: 80px;
+  margin-bottom: 40px;
 
   border: 1px solid rgba(255,255,255,0.06);
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
-
 
 /* ============================= */
 /* ===== SECTION STYLE ========= */
 /* ============================= */
 
 .section {
-  margin-bottom: 60px;
-  margin-top: 40px;
+  margin: 40px 0 60px;
 }
 
 .section h2 {
@@ -61,12 +86,9 @@
 
   margin-bottom: 15px;
 
-  /* gradient text */
   background: linear-gradient(90deg, #22D3EE, #A78BFA);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-
-  letter-spacing: 0.5px;
 
   display: flex;
   align-items: center;
@@ -78,14 +100,16 @@
 /* ============================= */
 /* ===== GRID LAYOUT =========== */
 /* ============================= */
+
 .card-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(280px, 1fr));
-  gap: 30px;
+  gap: 20px;
   width: 100%;
 }
+
 /* ============================= */
-/* ===== STAT CARD (MODERN) ==== */
+/* ===== STAT CARD ============= */
 /* ============================= */
 
 .stat-card {
@@ -93,9 +117,11 @@
   border-radius: 18px;
   padding: 25px;
   text-align: center;
+
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255,255,255,0.08);
   box-shadow: 0 10px 25px rgba(6,182,212,0.15);
+
   transition: all 0.3s ease;
 }
 
@@ -153,6 +179,13 @@
   box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 
   color: #E2E8F0;
+
+  transition: all 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(99,102,241,0.3);
 }
 
 .team-card button {
@@ -164,16 +197,9 @@
   border-radius: 6px;
   cursor: pointer;
 }
-.team-card {
-  transition: all 0.3s ease;
-}
 
-.team-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 10px 30px rgba(99,102,241,0.3);
-}
 /* ============================= */
-/* ===== PROJECT CARD FIX ====== */
+/* ===== PROJECT CARD ========== */
 /* ============================= */
 
 .project-card {
@@ -189,13 +215,34 @@
   color: #E2E8F0;
 }
 
+.project-card button {
+  margin-right: 8px;
+  margin-top: 10px;
+
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+
+  cursor: pointer;
+  background: #111827;
+  color: white;
+
+  transition: 0.3s;
+}
+
+.project-card button:hover {
+  background: #06B6D4;
+  transform: scale(1.05);
+}
+
 /* ============================= */
-/* ===== HERO TITLE STYLE ====== */
+/* ===== HERO TITLE ============ */
 /* ============================= */
 
 .hero-title {
   font-size: 36px;
   font-weight: 700;
+
   background: linear-gradient(90deg, #22D3EE, #A78BFA);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -208,7 +255,84 @@
 .dashboard-title {
   font-size: 26px;
   font-weight: 700;
-  color: #111827;
+  color: #E2E8F0;
+}
+
+/* ============================= */
+/* ===== CHAT BOX ============== */
+/* ============================= */
+
+.chat-box {
+  background: rgba(30, 41, 59, 0.6);
+  padding: 15px;
+  border-radius: 12px;
+
+  height: 200px;
+  overflow-y: auto;
+
+  margin-bottom: 10px;
+
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.chat-message {
+  margin-bottom: 8px;
+  color: #E2E8F0;
+  font-size: 14px;
+}
+
+.chat-input {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+
+  background: #111827;
+  color: white;
+}
+
+.chat-input button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+
+  background: #06B6D4;
+  color: black;
+
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.chat-input button:hover {
+  transform: scale(1.05);
+}
+
+/* ============================= */
+/* ===== CHAT CENTER =========== */
+/* ============================= */
+
+.chat-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 40px 0;
+}
+
+.chat-center .section {
+  width: min(60%, 700px);
+
+  background: rgba(30, 41, 59, 0.7);
+  padding: 20px;
+  border-radius: 16px;
+
+  backdrop-filter: blur(15px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
 /* ============================= */
@@ -218,12 +342,13 @@
 .modern-footer {
   margin-top: 60px;
   padding: 50px 40px;
+
   background: linear-gradient(135deg, #0f172a, #111827);
   color: white;
+
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  border-radius: 0;
 }
 
 .footer-brand h2 {
@@ -256,23 +381,32 @@
 }
 
 .footer-links a:hover {
-  color: #ffffff;
+  color: white;
+}
+
+/* ============================= */
+/* ===== INPUT FIX ============= */
+/* ============================= */
+
+input.search-input {
+  width: 250px;
 }
 
 /* ============================= */
 /* ===== RESPONSIVE ============ */
 /* ============================= */
 
+@media (max-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .hero-card {
     flex-direction: column;
     gap: 15px;
     text-align: center;
-  }
-
-  .search-bar {
-    width: 100%;
-    margin: 10px 0;
   }
 
   .top-navbar {
@@ -284,99 +418,13 @@
     justify-content: center;
     gap: 40px;
   }
-}
-input.search-input {
-  width: 250px;
-}
-* {
-  box-sizing: border-box;
-}
-.main-content {
-  margin-left: 240px;
-  width: calc(100% - 240px);
-  padding: 30px;
-  box-sizing: border-box;
 
-  flex: 1;   /* 🔥 ADD THIS */
-}
-.stat-card,
-.project-card,
-.team-card {
-  min-width: 0;
-}
-.card-grid {
-  outline: 2px solid transparent;
-}
-.project-card button {
-  margin-right: 8px;
-  margin-top: 10px;
-  padding: 6px 10px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  background: #111827;
-  color: white;
-  transition: 0.3s;
-}
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
 
-.project-card button:hover {
-  background: #06B6D4;
-  transform: scale(1.05);
-}
-.chat-box {
-  background: rgba(30, 41, 59, 0.6);
-  padding: 15px;
-  border-radius: 12px;
-  height: 200px;
-  overflow-y: auto;
-  margin-bottom: 10px;
-  border: 1px solid rgba(255,255,255,0.05);
-}
-
-.chat-message {
-  margin-bottom: 8px;
-  color: #E2E8F0;
-  font-size: 14px;
-}
-
-.chat-input {
-  display: flex;
-  gap: 10px;
-}
-
-.chat-input input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  background: #111827;
-  color: white;
-}
-
-.chat-input button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 8px;
-  background: #06B6D4;
-  color: black;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.chat-input button:hover {
-  transform: scale(1.05);
-}
-.chat-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 40px 0;
-}
-.chat-center .section {
-  width: 60%;
-  background: rgba(30, 41, 59, 0.7);
-  padding: 20px;
-  border-radius: 16px;
-  backdrop-filter: blur(15px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
 }

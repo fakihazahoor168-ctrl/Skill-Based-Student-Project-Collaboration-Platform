@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../styles/sidebar.css";
+import { FaFolder } from "react-icons/fa";
 import { 
   FaHome, 
   FaSearch, 
@@ -13,12 +14,13 @@ export default function Sidebar() {
   const location = useLocation();
 
   const menu = [
-    { name: "Dashboard", path: "/dashboard", icon: <FaHome /> },
-    { name: "Explore", path: "/explore", icon: <FaSearch /> },
-{ name: "Create Project", path: "/create", icon: <FaPlus /> },
-    { name: "Requests", path: "/request", icon: <FaEnvelope /> },
-    { name: "Profile", path: "/profile", icon: <FaUser /> }
-  ];
+  { name: "Dashboard", path: "/dashboard", icon: <FaHome /> },
+  { name: "Explore", path: "/explore", icon: <FaSearch /> },
+  { name: "Create Project", path: "/create", icon: <FaPlus /> },
+  { name: "My Projects", path: "/my-projects", icon: <FaFolder /> },
+  { name: "Requests", path: "/request", icon: <FaEnvelope /> },
+  { name: "Profile", path: "/profile", icon: <FaUser /> }
+];
 
   return (
     <div className="sidebar">
