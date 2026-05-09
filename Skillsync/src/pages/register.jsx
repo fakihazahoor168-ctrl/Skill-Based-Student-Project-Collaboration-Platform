@@ -1,18 +1,35 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Register() {
   const navigate = useNavigate();
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSuccess(true);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    skills: ""
+  });
+  const [error, setError] = useState("");
 
-    // Redirect to login after 2 seconds
-    setTimeout(() => {
-      navigate("/");
-    }, 2000);
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/register", formData);
+      setSuccess(true);
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    } catch (err) {
+      setError(err.response?.data?.message || "Something went wrong");
+    }
   };
 
   return (
@@ -39,13 +56,23 @@ export default function Register() {
           </div>
         )}
 
+        {/* Error Message */}
+        {error && (
+          <div className="alert alert-danger text-center mb-3">
+            {error}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label className="form-label text-secondary">Full Name</label>
             <input
               type="text"
+              name="name"
               className="form-control"
               placeholder="Enter your name"
+              value={formData.name}
+              onChange={handleChange}
               required
             />
           </div>
@@ -54,8 +81,11 @@ export default function Register() {
             <label className="form-label text-secondary">Email</label>
             <input
               type="email"
+              name="email"
               className="form-control"
               placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
               required
             />
           </div>
@@ -64,8 +94,11 @@ export default function Register() {
             <label className="form-label text-secondary">Password</label>
             <input
               type="password"
+              name="password"
               className="form-control"
               placeholder="Create password"
+              value={formData.password}
+              onChange={handleChange}
               required
             />
           </div>
@@ -74,8 +107,11 @@ export default function Register() {
             <label className="form-label text-secondary">Skills</label>
             <input
               type="text"
+              name="skills"
               className="form-control"
               placeholder="e.g. React, Node, UI Design"
+              value={formData.skills}
+              onChange={handleChange}
               required
             />
           </div>

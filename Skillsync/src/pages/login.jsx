@@ -1,15 +1,30 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [error, setError] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // For demo, login always succeeds
-    navigate("/dashboard");
+    setError("");
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/login", formData);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.response?.data?.message || "Invalid credentials");
+    }
   };
 
   return (
@@ -25,7 +40,7 @@ export default function Login() {
 
         {error && (
           <div className="alert alert-danger text-center mb-3">
-            Invalid credentials
+            {error}
           </div>
         )}
 
@@ -34,8 +49,11 @@ export default function Login() {
             <label className="form-label text-secondary">Email</label>
             <input
               type="email"
+              name="email"
               className="form-control"
               placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
               required
             />
           </div>
@@ -44,8 +62,11 @@ export default function Login() {
             <label className="form-label text-secondary">Password</label>
             <input
               type="password"
+              name="password"
               className="form-control"
               placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
               required
             />
           </div>

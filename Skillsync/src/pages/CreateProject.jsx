@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../styles/CreateProject.css";
 
 export default function CreateProject() {
@@ -12,6 +13,7 @@ export default function CreateProject() {
   });
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -20,7 +22,7 @@ export default function CreateProject() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // ✅ Validation
@@ -29,13 +31,27 @@ export default function CreateProject() {
       return;
     }
 
+    setLoading(true);
     setError("");
 
-    console.log("Project Created:", formData);
-
-    alert("Project Created Successfully 🚀");
-
-    navigate("/dashboard");
+    try {
+      const token = localStorage.getItem("token");
+      console.log("Using token:", token);
+      
+      const res = await axios.post("http://localhost:5000/api/projects", formData, {
+        headers: {
+          "x-auth-token": token
+        }
+      });
+      alert("Project Created Successfully 🚀");
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Create Project Error:", err);
+      const msg = err.response?.data?.message || err.message || "Failed to create project";
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -75,8 +91,8 @@ export default function CreateProject() {
             onChange={handleChange}
           />
 
-          <button type="submit">
-            Create Project
+          <button type="submit" disabled={loading}>
+            {loading ? "Creating..." : "Create Project"}
           </button>
 
         </form>

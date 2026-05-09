@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProjectCard from "../components/ProjectCard";
 import Footer from "../components/footer";
 import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 
 import {
   FaBolt, FaFire, FaUsers, FaChartLine, FaHistory,
@@ -14,6 +15,31 @@ import { MdTrendingUp, MdOutlineTimeline, MdStars } from "react-icons/md";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) {
+      navigate("/login");
+      return;
+    } 
+    setUser(JSON.parse(storedUser));
+
+    const fetchProjects = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/projects");
+        setProjects(res.data);
+      } catch (err) {
+        console.error("Error fetching projects:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, [navigate]);
 
   return (
     <div className="dashboard-page">
@@ -26,7 +52,7 @@ export default function Dashboard() {
             <div className="hero-text">
                 <h1>
                   <span className="welcome-text">Welcome back,</span>{" "}
-                  <span className="page-title">Fakiha</span>
+                  <span className="page-title">{user?.name || "User"}</span>
                 </h1>
               <p>Everything you need to manage your projects and collaborate with your team, all in one place.</p>
             </div>
@@ -144,56 +170,30 @@ export default function Dashboard() {
           <div className="section">
             <h2>📁 My Current Projects</h2>
             <div className="card-grid">
-              <div className="project-card" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <div>
-                  <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                    <h3 style={{ fontSize: '18px' }}>Portfolio Website</h3>
-                    <span className="badge" style={{ background: 'linear-gradient(135deg, #06B6D4, #0891B2)', color: '#FFFFFF', padding: '9px 15px', borderRadius: '8px', fontSize: '13px', fontWeight: '800', boxShadow: '0 4px 15px rgba(6, 182, 212, 0.4)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>ACTIVE</span>
-                  </div>
-                  <p style={{ color: '#94A3B8', fontSize: '13px' }}>A high-end personal portfolio built with React and advanced animations.</p>
-                  <div className="progress-mini" style={{ height: '8px', background: 'rgba(15, 23, 42, 0.5)', borderRadius: '10px', margin: '20px 0', overflow: 'hidden' }}>
-                    <div className="progress-bar" style={{ width: '75%', height: '100%', background: 'linear-gradient(90deg, #22d3ee, #06b6d4)', borderRadius: '10px' }}></div>
-                  </div>
-                </div>
-                <div className="btn-row" style={{ marginTop: '20px', display: 'flex', gap: '8px' }}>
-                  <button onClick={() => navigate("/edit")} style={{ flex: '1' }}>Edit</button>
-                  <button className="danger" style={{ flex: '1' }}>Delete</button>
-                </div>
-              </div>
-
-              <div className="project-card" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <div>
-                  <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                    <h3 style={{ fontSize: '18px' }}>Team Finder App</h3>
-                    <span className="badge" style={{ background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)', color: '#FFFFFF', padding: '9px 15px', borderRadius: '8px', fontSize: '13px', fontWeight: '800', boxShadow: '0 4px 15px rgba(139, 92, 246, 0.4)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>PLANNING</span>
-                  </div>
-                  <p style={{ color: '#94A3B8', fontSize: '13px' }}>Helping developers find the perfect squad for their next hackathon project.</p>
-                  <div className="progress-mini" style={{ height: '8px', background: 'rgba(15, 23, 42, 0.5)', borderRadius: '10px', margin: '20px 0', overflow: 'hidden' }}>
-                    <div className="progress-bar" style={{ width: '30%', height: '100%', background: 'linear-gradient(90deg, #a78bfa, #6366f1)', borderRadius: '10px' }}></div>
-                  </div>
-                </div>
-                <div className="btn-row" style={{ marginTop: '20px', display: 'flex', gap: '8px' }}>
-                  <button onClick={() => navigate("/edit")} style={{ flex: '1' }}>Edit</button>
-                  <button className="danger" style={{ flex: '1' }}>Delete</button>
-                </div>
-              </div>
-
-              <div className="project-card" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <div>
-                  <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                    <h3 style={{ fontSize: '18px' }}>Chat Hub Pro</h3>
-                    <span className="badge" style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)', color: '#FFFFFF', padding: '9px 15px', borderRadius: '8px', fontSize: '13px', fontWeight: '800', boxShadow: '0 4px 15px rgba(245, 158, 11, 0.4)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>DRAFT</span>
-                  </div>
-                  <p style={{ color: '#94A3B8', fontSize: '13px' }}>Real-time messaging platform with AI summarizing features.</p>
-                  <div className="progress-mini" style={{ height: '8px', background: 'rgba(15, 23, 42, 0.5)', borderRadius: '10px', margin: '20px 0', overflow: 'hidden' }}>
-                    <div className="progress-bar" style={{ width: '10%', height: '100%', background: 'linear-gradient(90deg, #facc15, #f59e0b)', borderRadius: '10px' }}></div>
-                  </div>
-                </div>
-                <div className="btn-row" style={{ marginTop: '20px', display: 'flex', gap: '8px' }}>
-                  <button onClick={() => navigate("/edit")} style={{ flex: '1' }}>Edit</button>
-                  <button className="danger" style={{ flex: '1' }}>Delete</button>
-                </div>
-              </div>
+              {projects.filter(p => (p.owner?._id || p.owner) === user?.id).length > 0 ? (
+                projects
+                  .filter(p => (p.owner?._id || p.owner) === user?.id)
+                  .map((project) => (
+                    <div key={project._id} className="project-card" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                      <div>
+                        <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                          <h3 style={{ fontSize: '18px' }}>{project.title}</h3>
+                          <span className="badge" style={{ background: 'linear-gradient(135deg, #06B6D4, #0891B2)', color: '#FFFFFF', padding: '9px 15px', borderRadius: '8px', fontSize: '13px', fontWeight: '800', boxShadow: '0 4px 15px rgba(6, 182, 212, 0.4)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>ACTIVE</span>
+                        </div>
+                        <p style={{ color: '#94A3B8', fontSize: '13px' }}>{project.description}</p>
+                        <div className="progress-mini" style={{ height: '8px', background: 'rgba(15, 23, 42, 0.5)', borderRadius: '10px', margin: '20px 0', overflow: 'hidden' }}>
+                          <div className="progress-bar" style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, #22d3ee, #06b6d4)', borderRadius: '10px' }}></div>
+                        </div>
+                      </div>
+                      <div className="btn-row" style={{ marginTop: '20px', display: 'flex', gap: '8px' }}>
+                        <button onClick={() => navigate(`/projects/${project._id}`)} style={{ flex: '1' }}>View</button>
+                        <button className="danger" style={{ flex: '1' }}>Delete</button>
+                      </div>
+                    </div>
+                  ))
+              ) : (
+                <p>You haven't created any projects yet.</p>
+              )}
             </div>
           </div>
 
@@ -301,16 +301,20 @@ export default function Dashboard() {
           <div className="section" style={{ marginBottom: '100px' }}>
             <h2><MdTrendingUp className="section-icon" /> People are joining these...</h2>
             <div className="card-grid">
-              <ProjectCard
-                title="AI Travel Planner"
-                description="Planning your next trip with the power of modern LLMs like GPT-4o."
-                tech={["Node.js", "AI", "React"]}
-              />
-              <ProjectCard
-                title="SaaS Admin Panel"
-                description="Clean, modern, and highly functional dashboard template for startups."
-                tech={["Tailwind", "Next.js"]}
-              />
+              {loading ? (
+                <p>Loading projects...</p>
+              ) : projects.length > 0 ? (
+                projects.map((project) => (
+                  <ProjectCard
+                    key={project._id}
+                    title={project.title}
+                    description={project.description}
+                    tech={project.tech}
+                  />
+                ))
+              ) : (
+                <p>No projects found. Be the first to create one!</p>
+              )}
             </div>
           </div>
 
