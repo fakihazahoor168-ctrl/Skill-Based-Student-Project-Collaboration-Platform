@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
 import ProjectCard from "../components/ProjectCard";
 
 export default function Explore() {
@@ -37,7 +35,7 @@ export default function Explore() {
 
         <div className="container">
 
-          <h2 className="mb-4">🔍 Explore Projects</h2>
+          <h2 className="mb-4">🔍 <span className="page-title">Explore Projects</span></h2>
 
           {/* SEARCH */}
           <input

@@ -6,7 +6,7 @@ export default function RequestPage() {
   const [incoming, setIncoming] = useState([]);
   const [invites, setInvites] = useState([]);
 
-  const currentUser = "Ahmed"; // 🔥 replace later with login user
+  const currentUser = "Ahmed";
 
   useEffect(() => {
     const allRequests = JSON.parse(localStorage.getItem("requests")) || [];

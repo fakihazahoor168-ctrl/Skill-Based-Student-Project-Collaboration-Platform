@@ -1,9 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Landing from "./pages/Landing";
 
 // Pages
 import Dashboard from "./pages/Dashboard";
@@ -13,6 +10,10 @@ import RequestPage from "./pages/Requests";
 import Profile from "./pages/Profile";
 import MyProjects from "./pages/MyProjects";
 import ProjectDetails from "./pages/ProjectDetails";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Landing from "./pages/Landing";
+
 
 // Layout
 import Layout from "./Layout";

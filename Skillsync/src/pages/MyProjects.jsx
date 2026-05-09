@@ -12,7 +12,7 @@ export default function MyProjects() {
   return (
     <div>
 
-      <h2>My Projects</h2>
+      <h2 className="mb-4">📁 <span className="page-title">My Projects</span></h2>
 
       <div className="card-grid">
 

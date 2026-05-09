@@ -1,4 +1,3 @@
-
 /* ===== GLOW EFFECTS ===== */
 .bg-glow {
   position: absolute;
@@ -33,9 +32,14 @@
   width: 360px;
   border: 1px solid rgba(255, 255, 255, 0.05);
 
+  overflow: hidden;
   box-shadow:
     0 10px 30px rgba(0, 0, 0, 0.6),
     0 0 40px rgba(6, 182, 212, 0.1);
+}
+
+.login-card {
+  margin: auto;
 }
 
 /* ===== TITLE ===== */

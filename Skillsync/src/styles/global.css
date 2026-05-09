@@ -6,7 +6,8 @@
 }
 
 /* HTML + BODY */
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
 }
@@ -24,12 +25,28 @@ body {
   font-weight: 700;
   background: linear-gradient(90deg, #06B6D4, #6366F1);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* PAGE TITLE (Gradient Utility) */
+.page-title {
+  display: inline-block;
+  background: linear-gradient(90deg, #22D3EE, #A78BFA);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent; /* Fallback for older browsers */
 }
 
 /* TEXT */
 .text-secondary {
   color: #CBD5F5 !important;
+}
+
+/* MARGINS */
+.mb-4 {
+  margin-bottom: 24px !important;
 }
 
 /* LINKS */
@@ -67,7 +84,8 @@ button {
 
 /* RIGHT SIDE AREA */
 .main-area {
-  margin-left: 240px;   /* MUST MATCH SIDEBAR WIDTH */
+  margin-left: 240px;
+  /* MUST MATCH SIDEBAR WIDTH */
   width: calc(100% - 240px);
   min-height: 100vh;
   display: flex;
@@ -80,8 +98,9 @@ button {
   width: 100%;
   padding: 20px;
   box-sizing: border-box;
-    padding-top: 80px;
+  padding-top: 80px;
 }
+
 .app-layout {
   display: flex;
 }
@@ -94,7 +113,8 @@ button {
   display: flex;
   flex-direction: column;
 
-  padding-top: 70px; /* navbar space fix */
+  padding-top: 70px;
+  /* navbar space fix */
 }
 
 .page-content {

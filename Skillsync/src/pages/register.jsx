@@ -7,7 +7,6 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Simulate registration success
     setSuccess(true);
 
     // Redirect to login after 2 seconds
@@ -94,7 +93,7 @@ export default function Register() {
 
         <p className="text-center text-secondary">
           Already have an account?{" "}
-          <Link to="/" className="link-text">
+          <Link to="/login" className="link-text">
             Login
           </Link>
         </p>
