@@ -1,26 +1,75 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/footer";
 import "../styles/profile.css";
 import { 
-  FaEdit, FaEnvelope, FaPhone, FaMapMarkerAlt, 
-  FaBriefcase, FaGraduationCap, FaGithub, 
-  FaLinkedin, FaTwitter, FaAward, FaUsers, 
-  FaRocket, FaCode, FaCheckCircle, FaStar
+  FaEdit, FaEnvelope, FaMapMarkerAlt, 
+  FaBriefcase, FaGithub, 
+  FaLinkedin, FaRocket, FaCode, FaCheckCircle, FaAward
 } from "react-icons/fa";
-import { FiMail, FiEdit3, FiShare2, FiMoreHorizontal } from "react-icons/fi";
+import { FiEdit3, FiShare2, FiSave, FiX } from "react-icons/fi";
 import profilePic from "../assets/logo.png"; 
 
 export default function Profile() {
-  const skills = [
-    { name: "React.js", perc: 90 },
-    { name: "Node.js", perc: 85 },
-    { name: "UI/UX Design", perc: 95 },
-    { name: "MongoDB", perc: 75 },
-    { name: "Python", perc: 60 },
-    { name: "Tailwind CSS", perc: 80 }
-  ];
+  const [user, setUser] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    bio: "",
+    skills: "",
+    github: "",
+    linkedin: ""
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const fetchProfile = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get("http://localhost:5000/api/auth/me", {
+        headers: { "x-auth-token": token }
+      });
+      setUser(res.data);
+      setFormData({
+        name: res.data.name || "",
+        bio: res.data.bio || "",
+        skills: res.data.skills ? res.data.skills.join(", ") : "",
+        github: res.data.github || "",
+        linkedin: res.data.linkedin || ""
+      });
+    } catch (err) {
+      console.error("Error fetching profile:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.put("http://localhost:5000/api/auth/profile", formData, {
+        headers: { "x-auth-token": token }
+      });
+      setUser(res.data);
+      setIsEditing(false);
+      alert("Profile updated successfully! ✨");
+    } catch (err) {
+      console.error("Error updating profile:", err);
+      alert("Failed to update profile.");
+    }
+  };
+
+  if (loading) return <div className="loading">Loading Profile...</div>;
 
   return (
     <div className="profile-page-wrapper">
@@ -40,24 +89,21 @@ export default function Profile() {
             <div className="profile-identity-card">
               <div className="profile-avatar-container">
                 <div className="profile-avatar-wrapper">
-                  <img src={profilePic} alt="Fakiha Zahoor" className="profile-avatar-main" />
+                  <img src={profilePic} alt={user?.name} className="profile-avatar-main" />
                   <div className="status-ring"></div>
                 </div>
               </div>
               
               <div className="profile-info-text">
-                <h1>Fakiha Zahoor</h1>
-                <p>Full Stack Developer & UI Enthusiast</p>
+                <h1>{user?.name}</h1>
+                <p>{user?.bio || "No bio added yet."}</p>
                 
                 <div className="profile-badges">
                   <div className="badge-item">
-                    <FaMapMarkerAlt /> Islamabad, PK
+                    <FaEnvelope /> {user?.email}
                   </div>
                   <div className="badge-item">
-                    <FaBriefcase /> Available for Hire
-                  </div>
-                  <div className="badge-item">
-                    <FaCheckCircle style={{ color: '#10b981' }} /> Verified Developer
+                    <FaCheckCircle style={{ color: '#10b981' }} /> Verified Member
                   </div>
                 </div>
               </div>
@@ -65,154 +111,101 @@ export default function Profile() {
 
             <div className="header-actions">
               <button className="btn-secondary-glass"><FiShare2 /> Share</button>
-              <button className="btn-primary-glass"><FiEdit3 /> Edit Profile</button>
+              <button 
+                className="btn-primary-glass"
+                onClick={() => setIsEditing(!isEditing)}
+              >
+                {isEditing ? <><FiX /> Cancel</> : <><FiEdit3 /> Edit Profile</>}
+              </button>
             </div>
           </div>
 
           <div className="profile-content-layout">
             
-            {/* LEFT COLUMN: ABOUT & SKILLS */}
+            {/* LEFT COLUMN */}
             <div className="profile-left-col">
               
-              {/* STATS BAR */}
-              <div className="glass-card stats-bar-card">
-                <div className="stats-grid">
-                  <div className="stat-box">
-                    <span className="stat-value">12</span>
-                    <span className="stat-label">Projects</span>
-                  </div>
-                  <div className="stat-box">
-                    <span className="stat-value">4.9</span>
-                    <span className="stat-label">Rating</span>
-                  </div>
-                  <div className="stat-box">
-                    <span className="stat-value">250+</span>
-                    <span className="stat-label">Followers</span>
-                  </div>
+              {/* EDIT FORM (Visible when isEditing is true) */}
+              {isEditing && (
+                <div className="glass-card edit-form-card">
+                  <h3 className="card-title"><FaEdit /> Update Profile</h3>
+                  <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                      <label>Full Name</label>
+                      <input type="text" name="name" value={formData.name} onChange={handleChange} />
+                    </div>
+                    <div className="form-group">
+                      <label>Bio</label>
+                      <textarea name="bio" value={formData.bio} onChange={handleChange} placeholder="Tell us about yourself..." />
+                    </div>
+                    <div className="form-group">
+                      <label>Skills (Comma separated)</label>
+                      <input type="text" name="skills" value={formData.skills} onChange={handleChange} placeholder="React, Node, CSS..." />
+                    </div>
+                    <div className="form-group">
+                      <label>GitHub URL</label>
+                      <input type="text" name="github" value={formData.github} onChange={handleChange} />
+                    </div>
+                    <div className="form-group">
+                      <label>LinkedIn URL</label>
+                      <input type="text" name="linkedin" value={formData.linkedin} onChange={handleChange} />
+                    </div>
+                    <button type="submit" className="save-btn"><FiSave /> Save Changes</button>
+                  </form>
                 </div>
-              </div>
+              )}
 
-              {/* EXPERTISE */}
+              {/* SKILLS */}
               <div className="glass-card skills-card">
                 <h3 className="card-title">
                   <div className="icon-box"><FaCode /></div>
-                  Top Expertise
+                  Your Skills
                 </h3>
                 
                 <div className="skills-list">
-                  {skills.map((skill, index) => (
-                    <div key={index} className="skill-row">
-                      <div className="skill-info">
-                        <span className="skill-name">{skill.name}</span>
-                        <span className="skill-perc">{skill.perc}%</span>
-                      </div>
-                      <div className="progress-track">
-                        <div className="progress-fill" style={{ width: `${skill.perc}%` }}></div>
-                      </div>
+                  {user?.skills?.length > 0 ? user.skills.map((skill, index) => (
+                    <div key={index} className="skill-tag">
+                      {skill}
                     </div>
-                  ))}
+                  )) : <p>No skills added yet.</p>}
                 </div>
               </div>
 
               {/* SOCIALS */}
               <div className="glass-card social-card" style={{ textAlign: 'center' }}>
-                <h3 className="card-title">Connect with me</h3>
+                <h3 className="card-title">Connect</h3>
                 <div className="social-strip" style={{ justifyContent: 'center' }}>
-                  <button className="social-circle-btn"><FaGithub /></button>
-                  <button className="social-circle-btn"><FaLinkedin /></button>
-                  <button className="social-circle-btn"><FaTwitter /></button>
-                  <button className="social-circle-btn"><FaEnvelope /></button>
+                  {user?.github && <a href={user.github} target="_blank" rel="noreferrer" className="social-circle-btn"><FaGithub /></a>}
+                  {user?.linkedin && <a href={user.linkedin} target="_blank" rel="noreferrer" className="social-circle-btn"><FaLinkedin /></a>}
                 </div>
               </div>
             </div>
 
-            {/* RIGHT COLUMN: WORK & ACTIVITY */}
+            {/* RIGHT COLUMN */}
             <div className="profile-right-col">
-              
-              {/* PROFESSIONAL BIO */}
               <div className="glass-card about-card">
                 <h3 className="card-title">
                   <div className="icon-box"><FaRocket /></div>
-                  Elevator Pitch
+                  About Me
                 </h3>
                 <p style={{ lineHeight: '1.8', color: '#94a3b8' }}>
-                  A developer at heart and a designer by choice. I specialize in building zero-to-one products that 
-                  not only solve user problems but also provide a delightful visual experience. With 3+ years in 
-                  Web3 and AI tool development, I thrive in fast-paced collaborative environments.
-                  <br /><br />
-                  Love experimenting with new CSS frameworks and motion libraries to push the boundaries of 
-                  what's possible in the browser.
+                  {user?.bio || "You haven't written a bio yet. Click Edit Profile to tell the community about your expertise and interests!"}
                 </p>
               </div>
 
-              {/* RECENT PROJECTS */}
-              <div className="glass-card projects-showcase">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px' }}>
-                  <h3 className="card-title" style={{ marginBottom: 0 }}>
-                    <div className="icon-box"><FaAward /></div>
-                    Featured Projects
-                  </h3>
-                  <button style={{ background: 'transparent', border: 'none', color: '#38bdf8', fontWeight: '600', cursor: 'pointer' }}>View Gallery</button>
-                </div>
-
-                <div className="project-visual-card">
-                  <div className="project-thumb">
-                    <FaCode />
+              {/* STATS */}
+              <div className="glass-card stats-bar-card">
+                <div className="stats-grid">
+                  <div className="stat-box">
+                    <span className="stat-value">Active</span>
+                    <span className="stat-label">Member</span>
                   </div>
-                  <div className="project-details">
-                    <h4>SkillSync Platform</h4>
-                    <p>The very tool you are using right now. Built with passion.</p>
-                    <div className="project-tags">
-                      <span className="mini-tag">React</span>
-                      <span className="mini-tag">MERN</span>
-                      <span className="mini-tag">AI Integration</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="project-visual-card">
-                  <div className="project-thumb">
-                    <FaStar />
-                  </div>
-                  <div className="project-details">
-                    <h4>Nebula Dashboard</h4>
-                    <p>A data visualization suite for crypto asset management.</p>
-                    <div className="project-tags">
-                      <span className="mini-tag">TypeScript</span>
-                      <span className="mini-tag">D3.js</span>
-                    </div>
+                  <div className="stat-box">
+                    <span className="stat-value">{user?.skills?.length || 0}</span>
+                    <span className="stat-label">Skills</span>
                   </div>
                 </div>
               </div>
-
-              {/* TIMELINE (EDUCATION & EXPERIENCE) */}
-              <div className="glass-card timeline-card">
-                <h3 className="card-title">
-                  <div className="icon-box"><FaGraduationCap /></div>
-                  Timeline
-                </h3>
-                
-                <div className="timeline">
-                  <div className="timeline-item">
-                    <div className="timeline-dot"></div>
-                    <div className="timeline-content">
-                      <h4>Senior Frontend Lead</h4>
-                      <span>CodeCanvas Studio • 2024 - Present</span>
-                      <p>Leading a team of 5 developers building high-end SaaS marketing pages and component libraries.</p>
-                    </div>
-                  </div>
-                  
-                  <div className="timeline-item">
-                    <div className="timeline-dot"></div>
-                    <div className="timeline-content">
-                      <h4>BS Computer Science</h4>
-                      <span>NUST University • 2020 - 2024</span>
-                      <p>Focused on Human-Computer Interaction and Advanced Algorithms. Graduated with Honors.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
             </div>
 
           </div>
@@ -220,6 +213,65 @@ export default function Profile() {
         
         <Footer />
       </div>
+
+      <style jsx>{`
+        .skill-tag {
+          display: inline-block;
+          background: rgba(34, 211, 238, 0.1);
+          color: #22d3ee;
+          padding: 8px 15px;
+          border-radius: 20px;
+          margin: 5px;
+          font-size: 14px;
+          border: 1px solid rgba(34, 211, 238, 0.2);
+        }
+        .edit-form-card form {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          margin-top: 20px;
+        }
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+        .form-group label {
+          font-size: 13px;
+          color: #94a3b8;
+        }
+        .form-group input, .form-group textarea {
+          background: rgba(15, 23, 42, 0.5);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 8px;
+          padding: 10px;
+          color: white;
+          outline: none;
+        }
+        .save-btn {
+          background: linear-gradient(135deg, #06b6d4, #3b82f6);
+          border: none;
+          padding: 12px;
+          border-radius: 8px;
+          color: white;
+          font-weight: 600;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          margin-top: 10px;
+        }
+        .loading {
+          height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #0f172a;
+          color: white;
+          font-size: 20px;
+        }
+      `}</style>
     </div>
   );
 }

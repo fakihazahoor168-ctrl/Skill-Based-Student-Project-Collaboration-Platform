@@ -19,6 +19,7 @@ export default function Sidebar() {
   { name: "Create Project", path: "/create", icon: <FaPlus /> },
   { name: "My Projects", path: "/my-projects", icon: <FaFolder /> },
   { name: "Requests", path: "/request", icon: <FaEnvelope /> },
+  { name: "Find Talent", path: "/find-talent", icon: <FaSearch /> },
   { name: "Profile", path: "/profile", icon: <FaUser /> }
 ];
 

@@ -13,6 +13,7 @@ import ProjectDetails from "./pages/ProjectDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Landing from "./pages/Landing";
+import FindTalent from "./pages/FindTalent";
 
 
 // Layout
@@ -42,6 +43,7 @@ function App() {
         <Route path="/create" element={<Layout><CreateProject /></Layout>} />
         <Route path="/request" element={<Layout><RequestPage /></Layout>} />
         <Route path="/profile" element={<Layout><Profile /></Layout>} />
+        <Route path="/find-talent" element={<Layout><FindTalent /></Layout>} />
 
         {/* NEW FEATURES */}
         <Route path="/my-projects" element={<Layout><MyProjects /></Layout>} />

@@ -17,6 +17,8 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [projects, setProjects] = useState([]);
+  const [myProjects, setMyProjects] = useState([]);
+  const [recommended, setRecommended] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,23 +29,35 @@ export default function Dashboard() {
     } 
     setUser(JSON.parse(storedUser));
 
-    const fetchProjects = async () => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+      const config = { headers: { "x-auth-token": token } };
+
       try {
-        const res = await axios.get("http://localhost:5000/api/projects");
-        setProjects(res.data);
+        // Fetch All Projects
+        const resAll = await axios.get("http://localhost:5000/api/projects");
+        setProjects(resAll.data);
+
+        // Fetch My Projects
+        const resMe = await axios.get("http://localhost:5000/api/projects/me", config);
+        setMyProjects(resMe.data);
+
+        // Fetch Recommended
+        const resRec = await axios.get("http://localhost:5000/api/projects/recommended", config);
+        setRecommended(resRec.data);
+
       } catch (err) {
-        console.error("Error fetching projects:", err);
+        console.error("Error fetching dashboard data:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProjects();
+    fetchData();
   }, [navigate]);
 
   return (
     <div className="dashboard-page">
-
       <div className="main-content">
         <div className="dashboard-container">
 
@@ -70,246 +84,99 @@ export default function Dashboard() {
             <div className="stat-card">
               <div>
                 <p>Projects Created</p>
-                <h3>05</h3>
+                <h3>{myProjects.length.toString().padStart(2, '0')}</h3>
               </div>
               <div className="stat-trend trend-up">
-                <FiTrendingUp /> +12% performance
+                <FiTrendingUp /> Active contribution
               </div>
             </div>
 
             <div className="stat-card">
               <div>
-                <p>Join Requests</p>
-                <h3>03</h3>
+                <p>Recommended</p>
+                <h3>{recommended.length.toString().padStart(2, '0')}</h3>
               </div>
               <div className="stat-trend trend-up">
-                <FiTrendingUp /> +2 new this week
+                <FiTrendingUp /> Matches your skills
               </div>
             </div>
 
             <div className="stat-card">
               <div>
-                <p>Active Teams</p>
-                <h3>02</h3>
+                <p>Total Projects</p>
+                <h3>{projects.length.toString().padStart(2, '0')}</h3>
               </div>
               <div className="stat-trend">
-                <FiCheck /> 68% milestone reach
+                <FiCheck /> Global community
               </div>
             </div>
           </div>
 
-          {/*  SKILLS PROFICIENCY */}
+          {/* RECOMMENDED PROJECTS SECTION */}
           <div className="section">
-            <h2><FaCode className="section-icon" /> My Skills Proficiency</h2>
+            <h2><FaFire className="section-icon" style={{color: '#f59e0b'}} /> Recommended For You</h2>
+            <p style={{color: '#94a3b8', marginBottom: '20px', fontSize: '14px'}}>Based on your skills: {user?.skills?.join(", ")}</p>
             <div className="card-grid">
-              <div className="feed-card">
-                <p style={{ fontWeight: '600', marginBottom: '10px' }}>React.js Development</p>
-                <div className="progress-mini" style={{ height: '10px', background: 'rgba(30,41,59,0.5)', borderRadius: '10px' }}>
-                  <div style={{ width: '85%', height: '100%', background: 'linear-gradient(90deg, #06B6D4, #3B82F6)', borderRadius: '10px' }}></div>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', fontSize: '11px', color: '#94A3B8' }}>
-                  <span>Expert</span>
-                  <span>85%</span>
-                </div>
-              </div>
-              <div className="feed-card">
-                <p style={{ fontWeight: '600', marginBottom: '10px' }}>UI/UX Designing</p>
-                <div className="progress-mini" style={{ height: '10px', background: 'rgba(30,41,59,0.5)', borderRadius: '10px' }}>
-                  <div style={{ width: '70%', height: '100%', background: 'linear-gradient(90deg, #A78BFA, #6366F1)', borderRadius: '10px' }}></div>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', fontSize: '11px', color: '#94A3B8' }}>
-                  <span>Intermediate</span>
-                  <span>70%</span>
-                </div>
-              </div>
-              <div className="feed-card">
-                <p style={{ fontWeight: '600', marginBottom: '10px' }}>Backend (Node.js)</p>
-                <div className="progress-mini" style={{ height: '10px', background: 'rgba(30,41,59,0.5)', borderRadius: '10px' }}>
-                  <div style={{ width: '50%', height: '100%', background: 'linear-gradient(90deg, #FACC15, #F59E0B)', borderRadius: '10px' }}></div>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', fontSize: '11px', color: '#94A3B8' }}>
-                  <span>Beginner</span>
-                  <span>50%</span>
-                </div>
-              </div>
+              {loading ? (
+                <p>Loading...</p>
+              ) : recommended.length > 0 ? (
+                recommended.slice(0, 3).map((project) => (
+                  <ProjectCard
+                    key={project._id}
+                    title={project.title}
+                    description={project.description}
+                    tech={project.tech}
+                    onClick={() => navigate(`/projects/${project._id}`)}
+                  />
+                ))
+              ) : (
+                <p>Add more skills to your profile to get personalized recommendations!</p>
+              )}
             </div>
           </div>
 
-          {/* TASKS & MILESTONES */}
-          <div className="section">
-            <h2><FaTasks className="section-icon" /> Tasks & Milestones</h2>
-            <div className="feed-card" style={{ padding: '0' }}>
-              <div className="activity-item" style={{ padding: '20px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                <FaCheckCircle style={{ color: '#10B981', fontSize: '18px' }} />
-                <div className="activity-details">
-                  <p style={{ fontWeight: '600' }}>Fix Database Connection issues in AI Hub</p>
-                  <span>Assigned: Today • Deadline: 10:00 PM</span>
-                </div>
-                <button className="login-btn" style={{ padding: '5px 10px', fontSize: '11px' }}>Mark Done</button>
-              </div>
-              <div className="activity-item" style={{ padding: '20px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                <FaCheckCircle style={{ color: '#94A3B8', fontSize: '18px' }} />
-                <div className="activity-details">
-                  <p style={{ fontWeight: '600' }}>Create responsive Navbar for Portfolio</p>
-                  <span>Assigned: Yesterday • Deadline: Tomorrow</span>
-                </div>
-                <button className="login-btn" style={{ padding: '5px 10px', fontSize: '11px' }}>In Progress</button>
-              </div>
-              <div className="activity-item" style={{ padding: '20px' }}>
-                <FaCheckCircle style={{ color: '#94A3B8', fontSize: '18px' }} />
-                <div className="activity-details">
-                  <p style={{ fontWeight: '600' }}>Team Review of the current UI trends</p>
-                  <span>Assigned: 2 days ago • Friday, 4:00 PM</span>
-                </div>
-                <button className="login-btn" style={{ padding: '5px 10px', fontSize: '11px' }}>Scheduled</button>
-              </div>
-            </div>
-          </div>
-
-          {/*  MY PROJECTS */}
+          {/* MY PROJECTS */}
           <div className="section">
             <h2>📁 My Current Projects</h2>
             <div className="card-grid">
-              {projects.filter(p => (p.owner?._id || p.owner) === user?.id).length > 0 ? (
-                projects
-                  .filter(p => (p.owner?._id || p.owner) === user?.id)
-                  .map((project) => (
-                    <div key={project._id} className="project-card" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                      <div>
-                        <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                          <h3 style={{ fontSize: '18px' }}>{project.title}</h3>
-                          <span className="badge" style={{ background: 'linear-gradient(135deg, #06B6D4, #0891B2)', color: '#FFFFFF', padding: '9px 15px', borderRadius: '8px', fontSize: '13px', fontWeight: '800', boxShadow: '0 4px 15px rgba(6, 182, 212, 0.4)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>ACTIVE</span>
-                        </div>
-                        <p style={{ color: '#94A3B8', fontSize: '13px' }}>{project.description}</p>
-                        <div className="progress-mini" style={{ height: '8px', background: 'rgba(15, 23, 42, 0.5)', borderRadius: '10px', margin: '20px 0', overflow: 'hidden' }}>
-                          <div className="progress-bar" style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, #22d3ee, #06b6d4)', borderRadius: '10px' }}></div>
-                        </div>
+              {loading ? (
+                <p>Loading...</p>
+              ) : myProjects.length > 0 ? (
+                myProjects.map((project) => (
+                  <div key={project._id} className="project-card" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div>
+                      <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                        <h3 style={{ fontSize: '18px' }}>{project.title}</h3>
+                        <span className="badge" style={{ background: 'linear-gradient(135deg, #06B6D4, #0891B2)', color: '#FFFFFF', padding: '9px 15px', borderRadius: '8px', fontSize: '13px', fontWeight: '800', boxShadow: '0 4px 15px rgba(6, 182, 212, 0.4)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{project.status || 'ACTIVE'}</span>
                       </div>
-                      <div className="btn-row" style={{ marginTop: '20px', display: 'flex', gap: '8px' }}>
-                        <button onClick={() => navigate(`/projects/${project._id}`)} style={{ flex: '1' }}>View</button>
-                        <button className="danger" style={{ flex: '1' }}>Delete</button>
-                      </div>
+                      <p style={{ color: '#94A3B8', fontSize: '13px' }}>{project.description?.substring(0, 100)}...</p>
                     </div>
-                  ))
+                    <div className="btn-row" style={{ marginTop: '20px', display: 'flex', gap: '8px' }}>
+                      <button onClick={() => navigate(`/projects/${project._id}`)} style={{ flex: '1' }}>View</button>
+                      <button className="danger" style={{ flex: '1' }}>Delete</button>
+                    </div>
+                  </div>
+                ))
               ) : (
                 <p>You haven't created any projects yet.</p>
               )}
             </div>
           </div>
 
-          {/* TEAM CHAT & FEEDBACK  */}
-          <div className="section">
-            <h2><FaHistory className="section-icon" /> Recent Application Activity</h2>
-            <div className="feed-card">
-              <div className="activity-item">
-                <div className="activity-avatar">AH</div>
-                <div className="activity-details">
-                  <p><b>Ahmed</b> applied to join your <b>Portfolio Hub</b> project.</p>
-                  <span>2 hours ago • <Link to="/request" style={{ color: '#22D3EE', textDecoration: 'none' }}>View Request</Link></span>
-                </div>
-              </div>
-              <div className="activity-item">
-                <div className="activity-avatar">SA</div>
-                <div className="activity-details">
-                  <p><b>Sara</b> sent a message in the <b>Team Finder</b> general chat.</p>
-                  <span>5 hours ago • <Link to="/chat" style={{ color: '#22D3EE', textDecoration: 'none' }}>Open Chat</Link></span>
-                </div>
-              </div>
-              <div className="activity-item">
-                <div className="activity-avatar">AL</div>
-                <div className="activity-details">
-                  <p><b>Ali</b> updated his status to: <i>"Focusing on the Backend refactor"</i></p>
-                  <span>Yesterday</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* WEEKLY PRODUCTIVITY CHART */}
-          <div className="section">
-            <h2><FaChartLine className="section-icon" /> Weekly Insights & Productivity</h2>
-            <div className="feed-card" style={{ padding: '30px' }}>
-              <p style={{ color: '#94A3B8', marginBottom: '20px' }}>Your daily project activity status over the last 7 days.</p>
-              <div className="mini-chart" style={{ height: '150px', alignItems: 'flex-end', justifyContent: 'space-between', padding: '0 20px' }}>
-                <div className="chart-bar" style={{ height: '50%', width: '40px', background: 'rgba(6,182,212,0.2)', borderRadius: '4px' }}></div>
-                <div className="chart-bar" style={{ height: '30%', width: '40px', background: 'rgba(6,182,212,0.2)', borderRadius: '4px' }}></div>
-                <div className="chart-bar" style={{ height: '70%', width: '40px', background: 'rgba(6,182,212,0.2)', borderRadius: '4px' }}></div>
-                <div className="chart-bar active" style={{ height: '95%', width: '40px', background: 'linear-gradient(to top, #06B6D4, #22D3EE)', borderRadius: '4px' }}></div>
-                <div className="chart-bar" style={{ height: '60%', width: '40px', background: 'rgba(6,182,212,0.2)', borderRadius: '4px' }}></div>
-                <div className="chart-bar" style={{ height: '80%', width: '40px', background: 'rgba(6,182,212,0.2)', borderRadius: '4px' }}></div>
-                <div className="chart-bar" style={{ height: '40%', width: '40px', background: 'rgba(6,182,212,0.2)', borderRadius: '4px' }}></div>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 10px 0', color: '#94A3B8', fontSize: '11px' }}>
-                <span>Mon</span><span>Tue</span><span>Wed</span><span style={{ color: '#22D3EE', fontWeight: 'bold' }}>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
-              </div>
-              <div style={{ marginTop: '30px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '20px' }}>
-                <p style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                  <span style={{ fontSize: '24px', fontWeight: 'bold' }}>+15%</span>
-                  <span style={{ color: '#10B981', display: 'flex', alignItems: 'center' }}><FiTrendingUp /> Increase in project engagement</span>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* 👥 TEAM ONLINE STATUS */}
-          <div className="section">
-            <h2><FaUsers className="section-icon" /> Suggested Team Partners Online</h2>
-            <div className="card-grid">
-              <div className="team-card">
-                <div className="activity-avatar" style={{ width: '50px', height: '50px', margin: '0 auto 10px', fontSize: '18px', border: '3px solid #10B981' }}>MH</div>
-                <h4>Mohsin Hayat</h4>
-                <p style={{ fontSize: '12px', color: '#94A3B8' }}>Full Stack Developer • Online</p>
-                <button style={{ width: '100%', marginTop: '15px' }}>Invite to Project</button>
-              </div>
-              <div className="team-card">
-                <div className="activity-avatar" style={{ width: '50px', height: '50px', margin: '0 auto 10px', fontSize: '18px', border: '3px solid #10B981' }}>ZK</div>
-                <h4>Zunair Khan</h4>
-                <p style={{ fontSize: '12px', color: '#94A3B8' }}>UI Specialist • Online</p>
-                <button style={{ width: '100%', marginTop: '15px' }}>Invite to Project</button>
-              </div>
-              <div className="team-card">
-                <div className="activity-avatar" style={{ width: '50px', height: '50px', margin: '0 auto 10px', fontSize: '18px', border: '3px solid #64748b' }}>AR</div>
-                <h4>Anila R.</h4>
-                <p style={{ fontSize: '12px', color: '#94A3B8' }}>Graphic Designer • Away</p>
-                <button style={{ width: '100%', marginTop: '15px' }}>Invite to Project</button>
-              </div>
-            </div>
-          </div>
-
-          {/* COMMUNITY NEWS HUB */}
-          <div className="section">
-            <h2><FaGlobe className="section-icon" /> Developer Community News</h2>
-            <div className="card-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
-              <div className="feed-card" style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-                <FaLightbulb style={{ fontSize: '32px', color: '#FACC15' }} />
-                <div>
-                  <p style={{ fontWeight: '700', fontSize: '16px' }}>React 19 Hooks Preview</p>
-                  <p style={{ fontSize: '12px', color: '#94A3B8' }}>Learn about new features in the upcoming React 19 stable release.</p>
-                </div>
-              </div>
-              <div className="feed-card" style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-                <FaTrophy style={{ fontSize: '32px', color: '#6366F1' }} />
-                <div>
-                  <p style={{ fontWeight: '700', fontSize: '16px' }}>Upcoming Hackathon 2026</p>
-                  <p style={{ fontSize: '12px', color: '#94A3B8' }}>Join the global hackathon and win up to $5000 in prizes!</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* TRENDING PROJECTS */}
           <div className="section" style={{ marginBottom: '100px' }}>
-            <h2><MdTrendingUp className="section-icon" /> People are joining these...</h2>
+            <h2><MdTrendingUp className="section-icon" /> Explore All Projects</h2>
             <div className="card-grid">
               {loading ? (
                 <p>Loading projects...</p>
               ) : projects.length > 0 ? (
-                projects.map((project) => (
+                projects.slice(0, 6).map((project) => (
                   <ProjectCard
                     key={project._id}
                     title={project.title}
                     description={project.description}
                     tech={project.tech}
+                    onClick={() => navigate(`/projects/${project._id}`)}
                   />
                 ))
               ) : (
@@ -322,7 +189,6 @@ export default function Dashboard() {
 
         <Footer />
       </div>
-
     </div>
   );
 }

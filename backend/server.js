@@ -17,6 +17,10 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/projects', require('./routes/projects'));
+app.use('/api/applications', require('./routes/applications'));
+app.use('/api/notifications', require('./routes/notifications'));
+app.use('/api/tasks', require('./routes/tasks'));
+app.use('/api/comments', require('./routes/comments'));
 
 // Root route
 app.get('/', (req, res) => {
