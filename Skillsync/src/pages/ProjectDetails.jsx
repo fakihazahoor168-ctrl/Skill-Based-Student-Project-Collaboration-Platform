@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaUser, FaCode, FaCheckCircle, FaRocket, FaTasks, FaComments } from "react-icons/fa";
+import { FaUser, FaCode, FaCheckCircle, FaRocket, FaTasks, FaComments, FaGithub } from "react-icons/fa";
 import { FiArrowLeft, FiSend } from "react-icons/fi";
 
 export default function ProjectDetails() {
@@ -18,6 +18,16 @@ export default function ProjectDetails() {
   const [taskDesc, setTaskDesc] = useState("");
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
+  const [suggestedTeammates, setSuggestedTeammates] = useState([]);
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false);
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [editTaskTitle, setEditTaskTitle] = useState("");
+  const [editTaskDesc, setEditTaskDesc] = useState("");
+  const [editTaskDeadline, setEditTaskDeadline] = useState("");
+  const [editTaskAssignedTo, setEditTaskAssignedTo] = useState("");
+  const [commits, setCommits] = useState([]);
+  const [loadingCommits, setLoadingCommits] = useState(false);
+
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -27,6 +37,47 @@ export default function ProjectDetails() {
     fetchComments();
   }, [id]);
 
+  useEffect(() => {
+    if (project && user) {
+      const userId = user.id || user._id;
+      const isOwner = userId === (project.owner?._id || project.owner);
+      if (isOwner) {
+        fetchSuggestions();
+      }
+    }
+    
+    if (project?.githubRepo) {
+      fetchCommits(project.githubRepo);
+    }
+  }, [project, user]);
+
+  const fetchCommits = async (repo) => {
+    try {
+      setLoadingCommits(true);
+      const res = await axios.get(`https://api.github.com/repos/${repo}/commits?per_page=5`);
+      setCommits(res.data);
+    } catch (err) {
+      console.error("Error fetching GitHub commits:", err);
+    } finally {
+      setLoadingCommits(false);
+    }
+  };
+
+  const fetchSuggestions = async () => {
+    try {
+      setLoadingSuggestions(true);
+      const token = localStorage.getItem("token");
+      const res = await axios.get(`http://localhost:5000/api/projects/${id}/suggested-teammates`, {
+        headers: { "x-auth-token": token }
+      });
+      setSuggestedTeammates(res.data);
+    } catch (err) {
+      console.error("Error fetching suggestions:", err);
+    } finally {
+      setLoadingSuggestions(false);
+    }
+  };
+
   const fetchComments = async () => {
     try {
       const res = await axios.get(`http://localhost:5000/api/comments/${id}`);
@@ -35,6 +86,7 @@ export default function ProjectDetails() {
       console.error(err);
     }
   };
+
 
   const handleAddComment = async (e) => {
     e.preventDefault();
@@ -51,6 +103,20 @@ export default function ProjectDetails() {
       alert("Failed to post comment");
     }
   };
+
+  const handleDeleteComment = async (commentId) => {
+    if (!window.confirm("Are you sure you want to delete this comment?")) return;
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`http://localhost:5000/api/comments/${commentId}`, {
+        headers: { "x-auth-token": token }
+      });
+      fetchComments();
+    } catch (err) {
+      alert("Failed to delete comment");
+    }
+  };
+
 
   const fetchProject = async () => {
     try {
@@ -105,6 +171,47 @@ export default function ProjectDetails() {
     }
   };
 
+  const startEditingTask = (task) => {
+    setEditingTaskId(task._id);
+    setEditTaskTitle(task.title);
+    setEditTaskDesc(task.description || "");
+    setEditTaskDeadline(task.deadline ? task.deadline.substring(0, 10) : "");
+    setEditTaskAssignedTo(task.assignedTo?._id || task.assignedTo || "");
+  };
+
+  const handleEditTask = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(`http://localhost:5000/api/tasks/${editingTaskId}`, {
+        title: editTaskTitle,
+        description: editTaskDesc,
+        deadline: editTaskDeadline || null,
+        assignedTo: editTaskAssignedTo || null
+      }, {
+        headers: { "x-auth-token": token }
+      });
+      setEditingTaskId(null);
+      fetchTasks();
+    } catch (err) {
+      alert("Failed to edit task details");
+    }
+  };
+
+  const handleDeleteTask = async (taskId) => {
+    if (!window.confirm("Are you sure you want to delete this task?")) return;
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`http://localhost:5000/api/tasks/${taskId}`, {
+        headers: { "x-auth-token": token }
+      });
+      fetchTasks();
+    } catch (err) {
+      alert("Failed to delete task");
+    }
+  };
+
+
   const handleApply = async (e) => {
     e.preventDefault();
     if (!message.trim()) return alert("Please enter a message!");
@@ -128,7 +235,8 @@ export default function ProjectDetails() {
   if (loading) return <div className="loading-screen">Loading...</div>;
   if (!project) return <div className="error-screen">Project not found.</div>;
 
-  const isOwner = user?.id === (project.owner?._id || project.owner);
+  const userId = user?.id || user?._id;
+  const isOwner = userId === (project.owner?._id || project.owner);
 
   return (
     <div className="project-details-page" style={{ padding: '20px' }}>
@@ -136,11 +244,11 @@ export default function ProjectDetails() {
         <FiArrowLeft /> Back
       </button>
 
-      <div className="details-container">
+      <div className={`details-container ${(!isOwner && project.team?.some(m => (m._id || m) === userId)) ? 'member-view' : ''}`}>
         <div className="glass-card main-info">
-          <div className="header-flex">
-            <h1>{project.title}</h1>
-            <span className="status-badge">{project.status?.toUpperCase() || 'OPEN'}</span>
+          <div className="header-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '20px', marginBottom: '20px' }}>
+            <h1 style={{ margin: 0, fontSize: '28px', lineHeight: '1.2', wordBreak: 'break-word', flex: 1 }}>{project.title}</h1>
+            <span className="status-badge" style={{ flexShrink: 0, alignSelf: 'flex-start' }}>{project.status?.toUpperCase() || 'OPEN'}</span>
           </div>
           <p className="description">{project.description}</p>
           
@@ -176,7 +284,7 @@ export default function ProjectDetails() {
           <hr style={{ border: '1px solid rgba(255,255,255,0.05)', margin: '30px 0' }} />
 
           {/* TASKS SECTION */}
-          {(isOwner || project.team?.some(m => m._id === user?.id)) && (
+          {(isOwner || project.team?.some(m => (m._id || m) === userId)) && (
             <div className="tasks-section">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h3><FaTasks /> Project Roadmap & Tasks</h3>
@@ -194,17 +302,81 @@ export default function ProjectDetails() {
               <div className="task-list">
                 {tasks.length > 0 ? tasks.map(task => (
                   <div key={task._id} className={`task-item ${task.status}`}>
-                    <div className="task-info">
-                      <h4>{task.title}</h4>
-                      <p>{task.description}</p>
-                    </div>
-                    <div className="task-actions">
-                      <select value={task.status} onChange={(e) => updateTaskStatus(task._id, e.target.value)}>
-                        <option value="todo">To Do</option>
-                        <option value="in-progress">In Progress</option>
-                        <option value="completed">Completed</option>
-                      </select>
-                    </div>
+                    {editingTaskId === task._id ? (
+                      <form className="task-edit-form" onSubmit={handleEditTask} style={{ width: '100%' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <input 
+                            type="text" 
+                            value={editTaskTitle} 
+                            onChange={(e) => setEditTaskTitle(e.target.value)} 
+                            required 
+                            placeholder="Task Title"
+                          />
+                          <textarea 
+                            value={editTaskDesc} 
+                            onChange={(e) => setEditTaskDesc(e.target.value)} 
+                            placeholder="Description"
+                          />
+                          
+                          <div style={{ display: 'flex', gap: '10px' }}>
+                            <div style={{ flex: 1 }}>
+                              <label style={{ fontSize: '11px', color: '#94a3b8' }}>Deadline</label>
+                              <input 
+                                type="date" 
+                                value={editTaskDeadline} 
+                                onChange={(e) => setEditTaskDeadline(e.target.value)} 
+                              />
+                            </div>
+                            <div style={{ flex: 1 }}>
+                              <label style={{ fontSize: '11px', color: '#94a3b8' }}>Assignee</label>
+                              <select 
+                                value={editTaskAssignedTo} 
+                                onChange={(e) => setEditTaskAssignedTo(e.target.value)}
+                              >
+                                <option value="">Unassigned</option>
+                                <option value={project.owner?._id || project.owner}>{project.owner?.name} (Owner)</option>
+                                {project.team?.map(m => (
+                                  <option key={m._id} value={m._id}>{m.name}</option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
+
+                          <div style={{ display: 'flex', gap: '10px', marginTop: '5px' }}>
+                            <button type="submit" className="save-task-btn">Save</button>
+                            <button type="button" className="cancel-task-btn" onClick={() => setEditingTaskId(null)}>Cancel</button>
+                          </div>
+                        </div>
+                      </form>
+                    ) : (
+                      <>
+                        <div className="task-info">
+                          <h4>{task.title}</h4>
+                          {task.description && <p>{task.description}</p>}
+                          <div className="task-meta" style={{ display: 'flex', gap: '12px', marginTop: '6px', fontSize: '11px', color: '#64748b' }}>
+                            {task.assignedTo && (
+                              <span>👤 Assigned: <b>{task.assignedTo?.name || 'Unknown'}</b></span>
+                            )}
+                            {task.deadline && (
+                              <span>📅 Deadline: <b>{new Date(task.deadline).toLocaleDateString()}</b></span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="task-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <select value={task.status} onChange={(e) => updateTaskStatus(task._id, e.target.value)}>
+                            <option value="todo">To Do</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                          </select>
+                          {isOwner && (
+                            <div className="task-owner-controls" style={{ display: 'flex', gap: '5px' }}>
+                              <button className="task-edit-btn" onClick={() => startEditingTask(task)} title="Edit Task">✏️</button>
+                              <button className="task-delete-btn" onClick={() => handleDeleteTask(task._id)} title="Delete Task">🗑️</button>
+                            </div>
+                          )}
+                        </div>
+                      </>
+                    )}
                   </div>
                 )) : <p className="empty-msg">No tasks created yet.</p>}
               </div>
@@ -232,10 +404,21 @@ export default function ProjectDetails() {
                   <div className="comment-avatar">
                     {comment.user?.name?.[0]?.toUpperCase()}
                   </div>
-                  <div className="comment-content">
-                    <div className="comment-header">
-                      <span className="user-name">{comment.user?.name}</span>
-                      <span className="comment-date">{new Date(comment.createdAt).toLocaleDateString()}</span>
+                  <div className="comment-content" style={{ flex: 1 }}>
+                    <div className="comment-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <span className="user-name">{comment.user?.name}</span>
+                        <span className="comment-date" style={{ marginLeft: '10px' }}>{new Date(comment.createdAt).toLocaleDateString()}</span>
+                      </div>
+                      {(user?.id === comment.user?._id || user?.id === comment.user || isOwner) && (
+                        <button 
+                          className="comment-delete-btn" 
+                          onClick={() => handleDeleteComment(comment._id)}
+                          title="Delete Comment"
+                        >
+                          🗑️
+                        </button>
+                      )}
                     </div>
                     <p>{comment.text}</p>
                   </div>
@@ -243,10 +426,51 @@ export default function ProjectDetails() {
               )) : <p className="empty-msg">No comments yet. Start the conversation!</p>}
             </div>
           </div>
+
+          {project.githubRepo && (
+            <>
+              <hr style={{ border: '1px solid rgba(255,255,255,0.05)', margin: '30px 0' }} />
+              <div className="github-section">
+                <h3><FaGithub /> GitHub Activity</h3>
+                <p style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '15px' }}>
+                  Repository: <b><a href={`https://github.com/${project.githubRepo}`} target="_blank" rel="noopener noreferrer" style={{ color: '#22d3ee' }}>{project.githubRepo}</a></b>
+                </p>
+                {loadingCommits ? (
+                  <p style={{ fontSize: '13px', color: '#94a3b8' }}>Fetching recent commits...</p>
+                ) : commits.length > 0 ? (
+                  <div className="commits-list">
+                    {commits.map((commitData) => (
+                      <div key={commitData.sha} className="commit-item">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                          <p className="commit-msg">
+                            <a href={commitData.html_url} target="_blank" rel="noopener noreferrer">
+                              {commitData.commit.message}
+                            </a>
+                          </p>
+                          <span className="commit-date">
+                            {new Date(commitData.commit.author.date).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px' }}>
+                          {commitData.author?.avatar_url && (
+                            <img src={commitData.author.avatar_url} alt="avatar" style={{ width: '20px', height: '20px', borderRadius: '50%' }} />
+                          )}
+                          <span className="commit-author">{commitData.commit.author.name}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p style={{ fontSize: '13px', color: '#94a3b8' }}>No commits found or API limit reached.</p>
+                )}
+              </div>
+            </>
+          )}
+
         </div>
 
         {/* APPLICATION FORM */}
-        {!isOwner && (
+        {!isOwner && !project.team?.some(m => (m._id || m) === userId) && (
           <div className="glass-card apply-form">
             <h3>Apply to join this project</h3>
             <p>Tell the owner why you're a good fit for this team.</p>
@@ -274,12 +498,83 @@ export default function ProjectDetails() {
             </div>
           </div>
         )}
+
+        {isOwner && (
+          <div className="glass-card suggestions-card" style={{ marginTop: '20px' }}>
+            <h3>🎯 Suggested Teammates</h3>
+            <p style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '15px' }}>
+              System-recommended peers based on skills overlap.
+            </p>
+            {loadingSuggestions ? (
+              <p style={{ fontSize: '13px', color: '#94a3b8' }}>Analyzing matching profiles...</p>
+            ) : suggestedTeammates.length > 0 ? (
+              <div className="suggestions-list">
+                {suggestedTeammates.map((sug, idx) => (
+                  <div key={idx} className="suggestion-item">
+                    <div className="suggestion-header">
+                      <span className="suggestion-name">{sug.user.name}</span>
+                      <span className={`match-badge ${
+                        sug.matchPercentage >= 75 ? 'match-high' : 
+                        sug.matchPercentage >= 50 ? 'match-medium' : 'match-low'
+                      }`}>
+                        {sug.matchPercentage}% Match
+                      </span>
+                    </div>
+
+                    <div className="suggestion-skills">
+                      {sug.user.skills.map((skill, sIdx) => {
+                        const isMatched = sug.matchingSkills.some(
+                          ms => ms.toLowerCase() === skill.toLowerCase()
+                        );
+                        return (
+                          <span 
+                            key={sIdx} 
+                            className={`suggestion-skill-tag ${isMatched ? 'matched' : ''}`}
+                          >
+                            {skill}
+                          </span>
+                        );
+                      })}
+                    </div>
+
+                    {sug.user.bio && <p className="suggestion-bio">{sug.user.bio}</p>}
+
+                    <div className="suggestion-footer">
+                      <a 
+                        href={`mailto:${sug.user.email}?subject=Collaboration Invitation for project: ${project.title}`} 
+                        className="suggestion-email"
+                      >
+                        ✉️ Invite via Email
+                      </a>
+                      <div className="suggestion-links">
+                        {sug.user.github && (
+                          <a href={sug.user.github} target="_blank" rel="noopener noreferrer" title="GitHub">
+                            GitHub
+                          </a>
+                        )}
+                        {sug.user.linkedin && (
+                          <a href={sug.user.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn">
+                            LinkedIn
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p style={{ fontSize: '13px', color: '#94a3b8' }}>No suggested teammates found with matching skills.</p>
+            )}
+          </div>
+        )}
       </div>
 
       <style jsx>{`
         .project-details-page { color: white; max-width: 1000px; margin: 0 auto; }
         .back-btn { background: none; border: none; color: #22d3ee; cursor: pointer; display: flex; align-items: center; gap: 5px; margin-bottom: 20px; font-weight: 600; }
         .details-container { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .details-container.member-view { display: block; max-width: 850px; margin: 0 auto; }
+        .details-container.member-view .main-info { width: 100%; }
         .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .status-badge { background: #22d3ee22; color: #22d3ee; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; border: 1px solid #22d3ee44; }
         .description { font-size: 16px; color: #94a3b8; line-height: 1.6; margin-bottom: 30px; }
@@ -311,6 +606,81 @@ export default function ProjectDetails() {
         .user-name { font-weight: bold; color: #f8fafc; font-size: 14px; }
         .comment-date { font-size: 11px; color: #64748b; }
         .comment-content p { margin: 0; font-size: 14px; color: #cbd5e1; }
+        
+        .github-section { padding-top: 10px; }
+        .github-section h3 { font-size: 18px; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+        .commits-list { display: flex; flex-direction: column; gap: 10px; }
+        .commit-item { background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; }
+        .commit-msg a { color: #f8fafc; text-decoration: none; font-size: 14px; font-weight: 500; }
+        .commit-msg a:hover { color: #22d3ee; text-decoration: underline; }
+        .commit-date { font-size: 11px; color: #94a3b8; }
+        .commit-author { font-size: 12px; color: #cbd5e1; }
+
+        .suggestions-card { padding: 20px; }
+        .suggestions-card h3 { font-size: 18px; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+        .suggestions-list { display: flex; flex-direction: column; gap: 12px; max-height: 450px; overflow-y: auto; padding-right: 5px; }
+        .suggestion-item { padding: 12px; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px; background: rgba(15, 23, 42, 0.4); }
+        .suggestion-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .suggestion-name { font-weight: bold; font-size: 14px; color: #f8fafc; }
+        .match-badge { font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: bold; }
+        .match-high { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .match-medium { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .match-low { background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3); }
+        .suggestion-skills { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+        .suggestion-skill-tag { font-size: 10px; background: rgba(255, 255, 255, 0.05); color: #94a3b8; padding: 1px 4px; border-radius: 3px; }
+        .suggestion-skill-tag.matched { background: rgba(34, 211, 238, 0.15); color: #22d3ee; border: 1px solid rgba(34, 211, 238, 0.3); }
+        .suggestion-bio { font-size: 12px; color: #cbd5e1; margin-bottom: 8px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .suggestion-footer { display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-top: 5px; }
+        .suggestion-email { color: #22d3ee; text-decoration: none; display: flex; align-items: center; gap: 4px; font-weight: bold; }
+        .suggestion-email:hover { text-decoration: underline; }
+        .suggestion-links { display: flex; gap: 8px; }
+        .suggestion-links a { color: #94a3b8; text-decoration: none; }
+        .suggestion-links a:hover { color: #22d3ee; }
+
+        .task-edit-btn, .task-delete-btn, .comment-delete-btn {
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-size: 14px;
+          padding: 4px;
+          border-radius: 4px;
+          transition: background 0.2s;
+        }
+        .task-edit-btn:hover { background: rgba(34, 211, 238, 0.15); }
+        .task-delete-btn:hover, .comment-delete-btn:hover { background: rgba(239, 68, 68, 0.15); }
+        .task-edit-form input, .task-edit-form textarea, .task-edit-form select {
+          width: 100%;
+          background: #0f172a;
+          border: 1px solid #334155;
+          padding: 8px;
+          color: white;
+          border-radius: 5px;
+          outline: none;
+          margin-bottom: 5px;
+        }
+        .task-edit-form label {
+          display: block;
+          margin-bottom: 2px;
+        }
+        .save-task-btn {
+          background: #10b981;
+          color: white;
+          border: none;
+          padding: 6px 12px;
+          border-radius: 4px;
+          cursor: pointer;
+          font-weight: bold;
+        }
+        .cancel-task-btn {
+          background: #64748b;
+          color: white;
+          border: none;
+          padding: 6px 12px;
+          border-radius: 4px;
+          cursor: pointer;
+          font-weight: bold;
+        }
+
         @media (max-width: 768px) { .details-container { grid-template-columns: 1fr; } }
       `}</style>
     </div>

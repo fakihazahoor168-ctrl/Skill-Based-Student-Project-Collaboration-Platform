@@ -14,6 +14,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Landing from "./pages/Landing";
 import FindTalent from "./pages/FindTalent";
+import EditProject from "./pages/EditProject";
 
 
 // Layout
@@ -48,6 +49,7 @@ function App() {
         {/* NEW FEATURES */}
         <Route path="/my-projects" element={<Layout><MyProjects /></Layout>} />
         <Route path="/projects/:id" element={<Layout><ProjectDetails /></Layout>} />
+        <Route path="/edit/:id" element={<Layout><EditProject /></Layout>} />
 
       </Routes>
     </Router>

@@ -82,8 +82,8 @@ export default function Navbar() {
       <div className="d-flex align-items-center gap-3">
         {/* NOTIFICATION BELL */}
         <div className="notification-container" ref={notifRef} style={{ position: 'relative' }}>
-          <div className="notification-icon" onClick={() => setNotifOpen(!notifOpen)} style={{ cursor: 'pointer', position: 'relative', fontSize: '20px' }}>
-            <FaBell />
+          <div className="notification-icon" onClick={() => setNotifOpen(!notifOpen)} style={{ cursor: 'pointer', position: 'relative', fontSize: '22px' }}>
+            <FaBell style={{ color: '#FACC15', filter: 'drop-shadow(0 0 8px rgba(250, 204, 21, 0.8))', transition: '0.3s' }} />
             {unreadCount > 0 && <span className="notif-badge">{unreadCount}</span>}
           </div>
           

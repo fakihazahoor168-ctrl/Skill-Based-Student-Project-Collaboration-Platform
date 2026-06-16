@@ -57,4 +57,30 @@ router.get('/:projectId', async (req, res) => {
     }
 });
 
+// @route   DELETE api/comments/:id
+// @desc    Delete a comment
+// @access  Private
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        const comment = await Comment.findById(req.params.id);
+        if (!comment) return res.status(404).json({ msg: 'Comment not found' });
+
+        const project = await Project.findById(comment.project);
+
+        // Authorized if user is the comment author OR project owner
+        const isAuthor = comment.user.toString() === req.user;
+        const isOwner = project && project.owner.toString() === req.user;
+
+        if (!isAuthor && !isOwner) {
+            return res.status(401).json({ msg: 'User not authorized to delete this comment' });
+        }
+
+        await Comment.findByIdAndDelete(req.params.id);
+        res.json({ msg: 'Comment deleted successfully' });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 module.exports = router;

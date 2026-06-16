@@ -56,6 +56,22 @@ export default function Dashboard() {
     fetchData();
   }, [navigate]);
 
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this project?")) {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.delete(`http://localhost:5000/api/projects/${id}`, {
+          headers: { "x-auth-token": token }
+        });
+        setMyProjects(myProjects.filter(p => p._id !== id));
+        setProjects(projects.filter(p => p._id !== id));
+      } catch (err) {
+        console.error("Error deleting project:", err);
+        alert("Failed to delete project");
+      }
+    }
+  };
+
   return (
     <div className="dashboard-page">
       <div className="main-content">
@@ -145,15 +161,15 @@ export default function Dashboard() {
                 myProjects.map((project) => (
                   <div key={project._id} className="project-card" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                     <div>
-                      <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                        <h3 style={{ fontSize: '18px' }}>{project.title}</h3>
-                        <span className="badge" style={{ background: 'linear-gradient(135deg, #06B6D4, #0891B2)', color: '#FFFFFF', padding: '9px 15px', borderRadius: '8px', fontSize: '13px', fontWeight: '800', boxShadow: '0 4px 15px rgba(6, 182, 212, 0.4)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{project.status || 'ACTIVE'}</span>
+                      <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '15px', marginBottom: '10px' }}>
+                        <h3 style={{ fontSize: '18px', margin: 0, wordBreak: 'break-word', flex: 1 }}>{project.title}</h3>
+                        <span className="badge" style={{ flexShrink: 0, alignSelf: 'flex-start', background: 'linear-gradient(135deg, #06B6D4, #0891B2)', color: '#FFFFFF', padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: '800', boxShadow: '0 4px 15px rgba(6, 182, 212, 0.4)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{project.status || 'ACTIVE'}</span>
                       </div>
                       <p style={{ color: '#94A3B8', fontSize: '13px' }}>{project.description?.substring(0, 100)}...</p>
                     </div>
                     <div className="btn-row" style={{ marginTop: '20px', display: 'flex', gap: '8px' }}>
                       <button onClick={() => navigate(`/projects/${project._id}`)} style={{ flex: '1' }}>View</button>
-                      <button className="danger" style={{ flex: '1' }}>Delete</button>
+                      <button className="danger" onClick={() => handleDelete(project._id)} style={{ flex: '1' }}>Delete</button>
                     </div>
                   </div>
                 ))

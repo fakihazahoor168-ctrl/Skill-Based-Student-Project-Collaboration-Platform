@@ -35,6 +35,21 @@ export default function MyProjects() {
     fetchAllMyProjects();
   }, [navigate]);
 
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this project?")) {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.delete(`http://localhost:5000/api/projects/${id}`, {
+          headers: { "x-auth-token": token }
+        });
+        setOwnedProjects(ownedProjects.filter(p => p._id !== id));
+      } catch (err) {
+        console.error("Error deleting project:", err);
+        alert("Failed to delete project");
+      }
+    }
+  };
+
   return (
     <div className="dashboard-page">
       <div className="main-content">
@@ -85,9 +100,9 @@ export default function MyProjects() {
                 (activeTab === "owned" ? ownedProjects : joinedProjects).map((p) => (
                   <div key={p._id} className="project-card glass-card" style={{ padding: '25px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                     <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
-                        <h3 style={{ margin: 0, fontSize: '1.4rem' }}>{p.title}</h3>
-                        <span className="badge" style={{ background: '#22d3ee22', color: '#22d3ee', padding: '4px 10px', borderRadius: '6px', fontSize: '12px' }}>{p.status || 'ACTIVE'}</span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '15px', marginBottom: '15px' }}>
+                        <h3 style={{ margin: 0, fontSize: '1.4rem', wordBreak: 'break-word', flex: 1 }}>{p.title}</h3>
+                        <span className="badge" style={{ flexShrink: 0, alignSelf: 'flex-start', background: '#22d3ee22', color: '#22d3ee', padding: '4px 10px', borderRadius: '6px', fontSize: '11px' }}>{p.status || 'ACTIVE'}</span>
                       </div>
                       <p style={{ color: '#94A3B8', fontSize: '14px', marginBottom: '20px' }}>
                         {p.description ? p.description.substring(0, 100) + '...' : ''}
@@ -106,6 +121,7 @@ export default function MyProjects() {
                       {activeTab === "owned" && (
                         <button 
                           className="danger" 
+                          onClick={() => handleDelete(p._id)}
                           style={{ padding: '10px 20px', borderRadius: '8px', background: '#ef444422', color: '#ef4444', border: '1px solid #ef444444', cursor: 'pointer' }}
                         >
                           Delete

@@ -80,16 +80,18 @@ button {
 
 .app-layout {
   display: flex;
+  min-height: 100vh;
 }
 
 /* RIGHT SIDE AREA */
 .main-area {
   margin-left: 240px;
-  /* MUST MATCH SIDEBAR WIDTH */
   width: calc(100% - 240px);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding-top: 70px; /* navbar space fix */
+  box-sizing: border-box;
 }
 
 /* PAGE CONTENT */
@@ -98,26 +100,4 @@ button {
   width: 100%;
   padding: 20px;
   box-sizing: border-box;
-  padding-top: 80px;
-}
-
-.app-layout {
-  display: flex;
-}
-
-/* MAIN AREA */
-.main-area {
-  flex: 1;
-  margin-left: 240px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-
-  padding-top: 70px;
-  /* navbar space fix */
-}
-
-.page-content {
-  flex: 1;
-  padding: 20px;
 }

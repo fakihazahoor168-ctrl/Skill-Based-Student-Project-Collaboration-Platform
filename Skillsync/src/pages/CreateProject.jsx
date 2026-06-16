@@ -10,6 +10,7 @@ export default function CreateProject() {
     title: "",
     description: "",
     tech: "",
+    githubRepo: "",
   });
 
   const [error, setError] = useState("");
@@ -88,6 +89,15 @@ export default function CreateProject() {
             name="tech"
             placeholder="e.g. React, Node, AI"
             value={formData.tech}
+            onChange={handleChange}
+          />
+
+          <label>GitHub Repository (Optional)</label>
+          <input
+            type="text"
+            name="githubRepo"
+            placeholder="e.g. facebook/react"
+            value={formData.githubRepo}
             onChange={handleChange}
           />
 
