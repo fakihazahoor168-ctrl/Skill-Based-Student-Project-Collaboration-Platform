@@ -3,15 +3,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 
 // Pages
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/dashboard";
 import Explore from "./pages/Explore";
 import CreateProject from "./pages/CreateProject";
 import RequestPage from "./pages/Requests";
 import Profile from "./pages/Profile";
 import MyProjects from "./pages/MyProjects";
 import ProjectDetails from "./pages/ProjectDetails";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Login from "./pages/login";
+import Register from "./pages/register";
 import Landing from "./pages/Landing";
 import FindTalent from "./pages/FindTalent";
 import EditProject from "./pages/EditProject";
