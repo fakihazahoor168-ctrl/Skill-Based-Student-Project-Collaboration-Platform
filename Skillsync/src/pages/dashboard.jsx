@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ProjectCard from "../components/ProjectCard";
+import ProjectCard from "../components/Projectcard";
 import Footer from "../components/footer";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";

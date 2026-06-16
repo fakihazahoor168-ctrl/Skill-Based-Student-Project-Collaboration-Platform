@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import ProjectCard from "../components/ProjectCard";
+import ProjectCard from "../components/Projectcard";
 
 export default function Explore() {
   const [search, setSearch] = useState("");
