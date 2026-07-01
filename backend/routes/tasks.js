@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const Task = require('../models/Task');
 const Project = require('../models/Project');
+const User = require('../models/User');
 
 // @route   POST api/tasks/:projectId
 // @desc    Create a task for a project

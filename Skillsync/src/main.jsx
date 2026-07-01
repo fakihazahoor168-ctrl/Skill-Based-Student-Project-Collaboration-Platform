@@ -6,6 +6,7 @@ import "./styles/navbar.css";
 import "./styles/cards.css";
 import "./styles/dashboard.css";
 import "./styles/buttons.css";
+import "./styles/enhancements.css";
 import App from './App.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';

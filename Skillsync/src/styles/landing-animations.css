@@ -1,0 +1,42 @@
+/* Landing page scroll reveal animations */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Subtle pulse glow for hero background */
+.hero-glow-1,
+.hero-glow-2,
+.cta-glow {
+  animation: pulseGlow 8s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Button hover micro‑animation */
+.btn-hero-primary,
+.btn-hero-secondary,
+.btn-nav-solid,
+.btn-nav-ghost {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-hero-primary:hover,
+.btn-hero-secondary:hover,
+.btn-nav-solid:hover,
+.btn-nav-ghost:hover {
+  transform: translateY(-2px);
+}
+
+
+

@@ -1,0 +1,53 @@
+/* landing-advanced.css cleared – original animations are defined in landing.css */
+
+/* Floating logo */
+@keyframes floatLogo {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.landing-logo { animation: floatLogo 6s ease-in-out infinite; }
+
+/* Gradient moving text */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.gradient-text {
+  background: linear-gradient(270deg, #ff6b6b, #f7c437, #4ecdc4, #5b5bff);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientMove 8s ease infinite;
+}
+
+/* Pulse button */
+@keyframes pulseButton {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.5); }
+  50% { box-shadow: 0 0 10px 5px rgba(255,255,255,0.8); }
+}
+.btn-hero-primary { animation: pulseButton 3s ease-in-out infinite; }
+
+/* Background moving gradient */
+@keyframes backgroundMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.landing-page {
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  background-size: 300% 300%;
+  animation: backgroundMove 15s linear infinite;
+  overflow: hidden; position: relative;
+}
+
+/* Floating blobs */
+@keyframes blobFloat {
+  0% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(-20px,15px) scale(1.1); }
+  66% { transform: translate(20px,-15px) scale(0.9); }
+  100% { transform: translate(0,0) scale(1); }
+}
+.blob { position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.6; animation: blobFloat 12s ease-in-out infinite; }
+.blob1 { width: 250px; height: 250px; background: #ff6b6b; top: -80px; left: -80px; }
+.blob2 { width: 300px; height: 300px; background: #4ecdc4; bottom: -120px; right: -120px; }

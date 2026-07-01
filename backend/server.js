@@ -21,6 +21,7 @@ app.use('/api/applications', require('./routes/applications'));
 app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/tasks', require('./routes/tasks'));
 app.use('/api/comments', require('./routes/comments'));
+app.use('/api/ai', require('./routes/ai'));
 
 // Root route
 app.get('/', (req, res) => {

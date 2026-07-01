@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/landing.css";
+import "../styles/landing-animations.css";
+
 import logo from "../assets/logo.png";
 import Footer from "../components/footer";
 import {
@@ -12,6 +14,42 @@ import {
 import { FiZap, FiArrowRight } from "react-icons/fi";
 
 export default function Landing() {
+  // Scroll reveal effect
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    const reveals = document.querySelectorAll('.reveal');
+    reveals.forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+  // Mouse parallax for hero background glows
+  React.useEffect(() => {
+    const handleMouseMove = (e) => {
+      const { innerWidth, innerHeight } = window;
+      const moveX = (e.clientX / innerWidth - 0.5) * 30; // max 15px offset each side
+      const moveY = (e.clientY / innerHeight - 0.5) * 30;
+      const glow1 = document.querySelector('.hero-glow-1');
+      const glow2 = document.querySelector('.hero-glow-2');
+      if (glow1) {
+        glow1.style.transform = `translate(calc(-50% + ${moveX}px), ${-100 + moveY}px)`;
+      }
+      if (glow2) {
+        glow2.style.transform = `translate(calc(15% + ${moveX}px), ${-50 + moveY}px)`;
+      }
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   const navigate = useNavigate();
   const [activeFAQ, setActiveFAQ] = useState(null);
 
@@ -89,13 +127,17 @@ export default function Landing() {
       </nav>
 
       {/* ─── HERO ─── */}
-      <section className="landing-hero">
+      <section className="landing-hero reveal">
         <div className="hero-glow-1"></div>
         <div className="hero-glow-2"></div>
 
 
         <h1 className="hero-title">
-          Find Projects. <span className="hero-gradient">Build Teams,</span>Ship Faster.
+         <h1 className="hero-title">
+  <span className="hero-gradient">Find Projects.</span>
+  <br />
+  <span className="hero-gradient">Build Teams, Ship Faster.</span>
+</h1>
         </h1>
 
         <p className="hero-subtitle">
@@ -123,7 +165,7 @@ export default function Landing() {
       </section>
 
       {/* ─── STATS BAR ─── */}
-      <section className="stats-strip" id="stats">
+      <section className="stats-strip reveal" id="stats">
         {stats.map((s, i) => (
           <div key={i} className="stat-pill">
             <div className="stat-pill-icon">{s.icon}</div>
@@ -136,7 +178,7 @@ export default function Landing() {
       </section>
 
       {/* ─── FEATURES ─── */}
-      <section className="features-section" id="features">
+      <section className="features-section reveal" id="features">
         <div className="section-header-center">
           <div className="section-eyebrow">Why SkillSync</div>
           <h2>Everything you need to<br /><span className="text-gradient">build & ship together</span></h2>
@@ -155,7 +197,7 @@ export default function Landing() {
       </section>
 
       {/* ─── HOW IT WORKS ─── */}
-      <section className="how-section" id="how">
+      <section className="how-section reveal" id="how">
         <div className="section-header-center">
           <div className="section-eyebrow">The Process</div>
           <h2>Up and running in<br /><span className="text-gradient">3 simple steps</span></h2>
@@ -173,7 +215,7 @@ export default function Landing() {
       </section>
 
       {/* ─── TESTIMONIALS ─── */}
-      <section className="testimonials-section" id="testimonials">
+      <section className="testimonials-section reveal" id="testimonials">
         <div className="section-header-center">
           <div className="section-eyebrow">Community Love</div>
           <h2>What our members <span className="text-gradient">say about us</span></h2>
@@ -198,7 +240,7 @@ export default function Landing() {
       </section>
 
       {/* ─── FAQ ─── */}
-      <section className="faq-section" id="faq">
+      <section className="faq-section reveal" id="faq">
         <div className="section-header-center">
           <div className="section-eyebrow">Got Questions?</div>
           <h2>Frequently Asked <span className="text-gradient">Questions</span></h2>
@@ -221,7 +263,7 @@ export default function Landing() {
       </section>
 
       {/* ─── CTA BANNER ─── */}
-      <section className="cta-banner">
+      <section className="cta-banner reveal">
         <div className="cta-glow"></div>
         <h2>Ready to build something <span className="text-gradient">amazing?</span></h2>
         <p>Join thousands of developers who are already collaborating on SkillSync.</p>

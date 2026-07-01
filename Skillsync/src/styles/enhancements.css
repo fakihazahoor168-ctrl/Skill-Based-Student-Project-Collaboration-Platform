@@ -1,0 +1,567 @@
+/* ============================================================
+   enhancements.css — Portfolio-Level Animations & Effects
+   ============================================================ */
+
+/* ─── KEYFRAMES ─── */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+  50%       { box-shadow: 0 0 24px 6px rgba(6, 182, 212, 0.35); }
+}
+
+@keyframes glowPulseIndigo {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+  50%       { box-shadow: 0 0 24px 6px rgba(99, 102, 241, 0.35); }
+}
+
+@keyframes shimmerSlide {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes borderGlow {
+  0%, 100% { border-color: rgba(6, 182, 212, 0.15); }
+  50%       { border-color: rgba(6, 182, 212, 0.6); }
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes rippleExpand {
+  0%   { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@keyframes blink {
+  0%, 100% { border-color: #06b6d4; }
+  50%       { border-color: transparent; }
+}
+
+@keyframes particleFloat {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-120px) rotate(720deg); opacity: 0; }
+}
+
+@keyframes progressFill {
+  from { width: 0%; }
+  to   { width: var(--fill-width, 70%); }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes navbarSlideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes sidebarSlideIn {
+  from { transform: translateX(-100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes cardEntrance {
+  0%   { opacity: 0; transform: translateY(30px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes iconBounce {
+  0%, 100% { transform: translateY(0); }
+  30%       { transform: translateY(-8px); }
+  60%       { transform: translateY(-4px); }
+}
+
+@keyframes starburst {
+  0%   { transform: scale(0) rotate(0deg); opacity: 0; }
+  60%  { opacity: 1; }
+  100% { transform: scale(1) rotate(360deg); opacity: 1; }
+}
+
+@keyframes scanline {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
+/* ─── GLOBAL ENTRY ANIMATIONS ─── */
+
+.navbar-custom {
+  animation: navbarSlideDown 0.7s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.landing-navbar {
+  animation: navbarSlideDown 0.7s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.sidebar, .sidebar-wrapper {
+  animation: sidebarSlideIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+/* ─── HERO SECTION ─── */
+
+.landing-hero {
+  animation: fadeInUp 0.9s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.hero-badge {
+  animation: fadeInScale 0.6s 0.2s both;
+}
+
+.hero-title {
+  animation: fadeInUp 0.8s 0.3s both;
+}
+
+.hero-subtitle {
+  animation: fadeInUp 0.8s 0.5s both;
+}
+
+.hero-actions {
+  animation: fadeInUp 0.8s 0.7s both;
+}
+
+.hero-social-proof {
+  animation: fadeInUp 0.8s 0.9s both;
+}
+
+/* ─── LOGO FLOAT ─── */
+
+.landing-logo, .navbar-logo {
+  animation: floatY 5s ease-in-out infinite;
+}
+
+/* ─── CTA BUTTON GLOW ─── */
+
+.btn-hero-primary, .btn-nav-solid {
+  animation: glowPulse 2.5s ease-in-out infinite;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-hero-primary:hover, .btn-nav-solid:hover {
+  animation: none;
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 20px 40px rgba(6, 182, 212, 0.5);
+}
+
+/* ─── FEATURE CARDS — STAGGERED ─── */
+
+.features-grid .feature-card:nth-child(1) { animation: cardEntrance 0.7s 0.1s both; }
+.features-grid .feature-card:nth-child(2) { animation: cardEntrance 0.7s 0.2s both; }
+.features-grid .feature-card:nth-child(3) { animation: cardEntrance 0.7s 0.3s both; }
+.features-grid .feature-card:nth-child(4) { animation: cardEntrance 0.7s 0.4s both; }
+
+.feature-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  border-color: rgba(6, 182, 212, 0.35) !important;
+  box-shadow: 0 24px 50px rgba(6, 182, 212, 0.18), 0 0 0 1px rgba(6, 182, 212, 0.15) !important;
+  transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.feature-icon-wrap {
+  animation: iconBounce 3s 1s ease-in-out infinite;
+}
+
+/* ─── STEP CARDS ─── */
+
+.steps-grid .step-card:nth-child(1) { animation: fadeInLeft 0.7s 0.1s both; }
+.steps-grid .step-card:nth-child(2) { animation: fadeInUp 0.7s 0.25s both; }
+.steps-grid .step-card:nth-child(3) { animation: fadeInRight 0.7s 0.4s both; }
+
+.step-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+  transition: all 0.3s ease;
+}
+
+.step-number {
+  animation: starburst 0.8s ease-out both;
+}
+
+/* ─── TESTIMONIAL CARDS ─── */
+
+.testimonials-grid .testimonial-card:nth-child(1) { animation: cardEntrance 0.7s 0.1s both; }
+.testimonials-grid .testimonial-card:nth-child(2) { animation: cardEntrance 0.7s 0.25s both; }
+.testimonials-grid .testimonial-card:nth-child(3) { animation: cardEntrance 0.7s 0.4s both; }
+
+/* ─── STATS STRIP ─── */
+
+.stat-pill {
+  animation: fadeInUp 0.6s both;
+}
+
+.stat-pill:nth-child(1) { animation-delay: 0.05s; }
+.stat-pill:nth-child(2) { animation-delay: 0.15s; }
+.stat-pill:nth-child(3) { animation-delay: 0.25s; }
+.stat-pill:nth-child(4) { animation-delay: 0.35s; }
+
+.stat-pill-value {
+  animation: countUp 0.6s 0.5s both;
+}
+
+/* ─── FAQ ─── */
+
+.faq-item {
+  animation: fadeInUp 0.5s both;
+  transition: all 0.3s ease;
+}
+
+.faq-item:nth-child(1) { animation-delay: 0.05s; }
+.faq-item:nth-child(2) { animation-delay: 0.15s; }
+.faq-item:nth-child(3) { animation-delay: 0.25s; }
+.faq-item:nth-child(4) { animation-delay: 0.35s; }
+
+.faq-item:hover {
+  border-color: rgba(6, 182, 212, 0.3) !important;
+  background: rgba(6, 182, 212, 0.04) !important;
+  transform: translateX(6px);
+}
+
+/* ─── DASHBOARD ─── */
+
+.hero-card {
+  animation: fadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.stat-card {
+  animation: cardEntrance 0.6s both;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.08s; }
+.stat-card:nth-child(2) { animation-delay: 0.18s; }
+.stat-card:nth-child(3) { animation-delay: 0.28s; }
+
+.stat-card:hover {
+  animation: glowPulse 2s ease-in-out infinite, none;
+  border-color: rgba(6, 182, 212, 0.35) !important;
+}
+
+/* ─── PROJECT CARDS ─── */
+
+.project-card {
+  animation: cardEntrance 0.6s both;
+  transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.project-card:nth-child(1) { animation-delay: 0.05s; }
+.project-card:nth-child(2) { animation-delay: 0.15s; }
+.project-card:nth-child(3) { animation-delay: 0.25s; }
+.project-card:nth-child(4) { animation-delay: 0.35s; }
+
+.project-card:hover {
+  transform: translateY(-12px) scale(1.02) !important;
+  box-shadow: 0 24px 50px rgba(6, 182, 212, 0.25) !important;
+}
+
+/* ─── TEAM CARDS ─── */
+
+.team-card {
+  animation: cardEntrance 0.6s both;
+  transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.team-card:hover {
+  transform: translateY(-10px) scale(1.03) !important;
+  box-shadow: 0 20px 45px rgba(99, 102, 241, 0.3) !important;
+  animation: glowPulseIndigo 2s ease-in-out infinite;
+}
+
+/* ─── PROFILE ─── */
+
+.profile-banner {
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+  background-size: 300% 300%;
+  animation: gradientShift 8s ease infinite;
+  z-index: 0;
+}
+
+.profile-avatar-container {
+  animation: fadeInScale 0.8s 0.3s both;
+}
+
+.profile-avatar-main {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.profile-avatar-main:hover {
+  transform: scale(1.05) rotate(2deg);
+  box-shadow: 0 20px 50px rgba(6, 182, 212, 0.4);
+}
+
+.status-ring {
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+.profile-info-text h1 {
+  animation: fadeInLeft 0.8s 0.4s both;
+}
+
+.profile-badges .badge-item {
+  animation: fadeInUp 0.5s both;
+  transition: all 0.3s ease;
+}
+
+.profile-badges .badge-item:nth-child(1) { animation-delay: 0.5s; }
+.profile-badges .badge-item:nth-child(2) { animation-delay: 0.6s; }
+.profile-badges .badge-item:nth-child(3) { animation-delay: 0.7s; }
+
+.badge-item:hover {
+  background: rgba(6, 182, 212, 0.15) !important;
+  border-color: rgba(6, 182, 212, 0.4) !important;
+  transform: translateY(-3px);
+}
+
+.glass-card {
+  animation: cardEntrance 0.7s both;
+  transition: all 0.3s ease;
+}
+
+.glass-card:nth-child(1) { animation-delay: 0.05s; }
+.glass-card:nth-child(2) { animation-delay: 0.15s; }
+.glass-card:nth-child(3) { animation-delay: 0.25s; }
+
+.glass-card:hover {
+  border-color: rgba(6, 182, 212, 0.2) !important;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3), 0 0 0 1px rgba(6,182,212,0.15) !important;
+  transform: translateY(-4px);
+}
+
+/* ─── PROGRESS BARS ─── */
+
+.progress-fill {
+  animation: progressFill 1.2s cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation-delay: 0.5s;
+}
+
+/* ─── SHIMMER TEXT EFFECT ─── */
+
+.hero-gradient, .text-gradient, .page-title, .brand-title {
+  background-size: 200% auto;
+  animation: shimmerSlide 4s linear infinite;
+}
+
+/* ─── SOCIAL CIRCLE BUTTONS ─── */
+
+.social-circle-btn {
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  animation: fadeInScale 0.5s both;
+}
+
+.social-circle-btn:nth-child(1) { animation-delay: 0.1s; }
+.social-circle-btn:nth-child(2) { animation-delay: 0.2s; }
+.social-circle-btn:nth-child(3) { animation-delay: 0.3s; }
+.social-circle-btn:nth-child(4) { animation-delay: 0.4s; }
+
+.social-circle-btn:hover {
+  transform: translateY(-8px) scale(1.15) !important;
+  box-shadow: 0 15px 30px rgba(56, 189, 248, 0.4) !important;
+}
+
+/* ─── PROJECT VISUAL CARD ─── */
+
+.project-visual-card {
+  animation: fadeInLeft 0.6s both;
+  transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.project-visual-card:nth-child(1) { animation-delay: 0.05s; }
+.project-visual-card:nth-child(2) { animation-delay: 0.15s; }
+.project-visual-card:nth-child(3) { animation-delay: 0.25s; }
+
+.project-visual-card:hover {
+  transform: translateX(14px) !important;
+  border-color: rgba(6, 182, 212, 0.25) !important;
+  box-shadow: 0 10px 30px rgba(6, 182, 212, 0.1) !important;
+}
+
+/* ─── TIMELINE DOTS ─── */
+
+.timeline-dot {
+  animation: glowPulse 2.5s ease-in-out infinite;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+}
+
+/* ─── FEED CARDS ─── */
+
+.feed-card {
+  animation: fadeInRight 0.7s both;
+  transition: all 0.3s ease;
+}
+
+.feed-card:hover {
+  border-color: rgba(6, 182, 212, 0.2) !important;
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3) !important;
+}
+
+/* ─── NAV LINKS HOVER ─── */
+
+.nav-link {
+  position: relative;
+  transition: color 0.25s ease;
+}
+
+.nav-link::after {
+  background: linear-gradient(90deg, #06b6d4, #6366f1) !important;
+}
+
+/* ─── LOGOUT BTN GLOW ─── */
+
+.logout-btn:hover {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.4) !important;
+  transform: translateY(-2px);
+}
+
+/* ─── SECTION HEADERS ─── */
+
+.section-header-center {
+  animation: fadeInUp 0.8s both;
+}
+
+.section-eyebrow {
+  animation: fadeInScale 0.6s 0.2s both;
+}
+
+.section h2, .section-header-center h2 {
+  animation: fadeInUp 0.7s 0.3s both;
+}
+
+/* ─── ACTIVITY ITEMS ─── */
+
+.activity-item {
+  animation: fadeInLeft 0.5s both;
+  transition: all 0.25s ease;
+}
+
+.activity-item:nth-child(1) { animation-delay: 0.05s; }
+.activity-item:nth-child(2) { animation-delay: 0.15s; }
+.activity-item:nth-child(3) { animation-delay: 0.25s; }
+
+.activity-item:hover {
+  background: rgba(6, 182, 212, 0.04);
+  padding-left: 8px;
+  border-radius: 8px;
+}
+
+/* ─── FOOTER ─── */
+
+.modern-footer {
+  animation: fadeInUp 0.9s both;
+}
+
+.footer-links a {
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: #06b6d4 !important;
+  transform: translateX(6px);
+}
+
+/* ─── AVATAR MINI ─── */
+
+.avatar-mini {
+  transition: transform 0.3s ease;
+  animation: fadeInScale 0.5s both;
+}
+
+.avatar-mini:hover {
+  transform: scale(1.2) translateY(-4px);
+  z-index: 10;
+}
+
+/* ─── GLASSMORPHISM CARDS BORDER GLOW ─── */
+
+.glass-card, .feed-card, .step-card, .feature-card, .testimonial-card {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ─── CTA BANNER ─── */
+
+.cta-banner h2 {
+  animation: fadeInUp 0.8s both;
+}
+
+.cta-banner p {
+  animation: fadeInUp 0.8s 0.2s both;
+}
+
+.cta-glow {
+  animation: gradientShift 6s ease infinite;
+  background-size: 300% 300%;
+}
+
+/* ─── MINI TAG HOVER ─── */
+
+.mini-tag {
+  transition: all 0.25s ease;
+  cursor: default;
+}
+
+.mini-tag:hover {
+  background: rgba(56, 189, 248, 0.25);
+  transform: scale(1.08);
+}
+
+/* ─── ACTION GRID BUTTONS ─── */
+
+.action-grid button {
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1) !important;
+}
+
+.action-grid button:hover {
+  transform: scale(1.08) translateY(-3px) !important;
+  box-shadow: 0 10px 25px rgba(6, 182, 212, 0.3) !important;
+}
+
+/* ─── SCROLLBAR ANIMATION ─── */
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #06B6D4, #818cf8);
+}

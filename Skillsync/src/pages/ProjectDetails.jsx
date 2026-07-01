@@ -20,6 +20,7 @@ export default function ProjectDetails() {
   const [commentText, setCommentText] = useState("");
   const [suggestedTeammates, setSuggestedTeammates] = useState([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
+  const [matchExplanations, setMatchExplanations] = useState({});
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editTaskTitle, setEditTaskTitle] = useState("");
   const [editTaskDesc, setEditTaskDesc] = useState("");
@@ -27,6 +28,7 @@ export default function ProjectDetails() {
   const [editTaskAssignedTo, setEditTaskAssignedTo] = useState("");
   const [commits, setCommits] = useState([]);
   const [loadingCommits, setLoadingCommits] = useState(false);
+  const [generatingRoadmap, setGeneratingRoadmap] = useState(false);
 
 
   useEffect(() => {
@@ -71,6 +73,30 @@ export default function ProjectDetails() {
         headers: { "x-auth-token": token }
       });
       setSuggestedTeammates(res.data);
+
+      // Fetch AI match explanations if we have suggestions and project data
+      if (res.data.length > 0 && project) {
+        try {
+          const aiRes = await axios.post('http://localhost:5000/api/ai/match-explanation', {
+            projectTitle: project.title,
+            projectTech: project.tech,
+            teammates: res.data.map(sug => ({
+              userId: sug.user._id,
+              name: sug.user.name,
+              skills: sug.user.skills,
+              matchingSkills: sug.matchingSkills,
+              matchPercentage: sug.matchPercentage
+            }))
+          }, {
+            headers: { "x-auth-token": token }
+          });
+          if (aiRes.data.explanations) {
+            setMatchExplanations(aiRes.data.explanations);
+          }
+        } catch (aiErr) {
+          console.error("AI match explanation error (non-critical):", aiErr);
+        }
+      }
     } catch (err) {
       console.error("Error fetching suggestions:", err);
     } finally {
@@ -155,6 +181,31 @@ export default function ProjectDetails() {
       fetchTasks();
     } catch (err) {
       alert("Failed to add task");
+    }
+  };
+
+  const handleGenerateRoadmap = async () => {
+    if (!window.confirm("Are you sure you want to auto-generate a 5-step AI roadmap for this project? This will create new tasks in your list based on project details.")) {
+      return;
+    }
+    try {
+      setGeneratingRoadmap(true);
+      const token = localStorage.getItem("token");
+      const res = await axios.post(`http://localhost:5000/api/ai/generate-roadmap/${id}`, {}, {
+        headers: { "x-auth-token": token }
+      });
+      if (res.data.success) {
+        fetchTasks();
+        alert("AI Roadmap generated successfully!");
+      } else {
+        alert(res.data.msg || "Failed to generate AI roadmap");
+      }
+    } catch (err) {
+      console.error("AI Roadmap Error:", err);
+      const errMsg = err.response?.data?.msg || "Failed to communicate with AI API. Ensure GEMINI_API_KEY is configured in backend/.env";
+      alert(errMsg);
+    } finally {
+      setGeneratingRoadmap(false);
     }
   };
 
@@ -288,7 +339,18 @@ export default function ProjectDetails() {
             <div className="tasks-section">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h3><FaTasks /> Project Roadmap & Tasks</h3>
-                {isOwner && <button onClick={() => setShowTaskForm(!showTaskForm)} className="add-task-btn">+ New Task</button>}
+                {isOwner && (
+                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <button 
+                      onClick={handleGenerateRoadmap} 
+                      disabled={generatingRoadmap}
+                      className="ai-roadmap-btn"
+                    >
+                      {generatingRoadmap ? "✨ Generating..." : "✨ Auto-Generate AI Roadmap"}
+                    </button>
+                    <button onClick={() => setShowTaskForm(!showTaskForm)} className="add-task-btn">+ New Task</button>
+                  </div>
+                )}
               </div>
 
               {showTaskForm && (
@@ -501,9 +563,9 @@ export default function ProjectDetails() {
 
         {isOwner && (
           <div className="glass-card suggestions-card" style={{ marginTop: '20px' }}>
-            <h3>🎯 Suggested Teammates</h3>
+            <h3>🎯 AI-Powered Teammate Suggestions</h3>
             <p style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '15px' }}>
-              System-recommended peers based on skills overlap.
+              AI-analyzed candidates ranked by skill compatibility.
             </p>
             {loadingSuggestions ? (
               <p style={{ fontSize: '13px', color: '#94a3b8' }}>Analyzing matching profiles...</p>
@@ -537,6 +599,11 @@ export default function ProjectDetails() {
                       })}
                     </div>
 
+                    {matchExplanations[sug.user._id] && (
+                      <p style={{ fontSize: '12px', color: '#a78bfa', fontStyle: 'italic', margin: '6px 0', padding: '6px 10px', background: 'rgba(167, 139, 250, 0.08)', borderRadius: '6px', borderLeft: '3px solid #a78bfa' }}>
+                        🤖 {matchExplanations[sug.user._id]}
+                      </p>
+                    )}
                     {sug.user.bio && <p className="suggestion-bio">{sug.user.bio}</p>}
 
                     <div className="suggestion-footer">
@@ -587,6 +654,9 @@ export default function ProjectDetails() {
         .apply-form button, .owner-panel button { width: 100%; background: linear-gradient(90deg, #06b6d4, #3b82f6); border: none; padding: 12px; border-radius: 10px; color: white; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
         .panel-btns { display: flex; gap: 10px; }
         .add-task-btn { background: #10b981; border: none; color: white; padding: 5px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .ai-roadmap-btn { background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%); border: none; color: white; padding: 5px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: transform 0.2s, opacity 0.2s; }
+        .ai-roadmap-btn:hover { transform: translateY(-1px); opacity: 0.9; }
+        .ai-roadmap-btn:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; transform: none; }
         .task-form { padding: 20px; margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
         .task-form input { background: #0f172a; border: 1px solid #334155; padding: 10px; color: white; border-radius: 5px; }
         .task-list { margin-top: 20px; }
